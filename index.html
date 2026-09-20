@@ -3,57 +3,72 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ai E-Sports - Professional Tournament</title>
+<title>Ai E-Sports - Official</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family: sans-serif;}
-body{background:#080808;color:white;}
-.header{background:#111;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #39FF14;position:sticky;top:0}
-.logo{font-size:22px;font-weight:900;color:#39FF14;letter-spacing:1px}
-.logo span{color:#FFEB00}
-.wallet{background:#FFEB00;color:black;padding:7px 18px;border-radius:20px;font-weight:800}
-.container{padding:15px;max-width:500px;margin:auto}
-.banner{background:linear-gradient(135deg,#39FF14,#FFEB00);color:black;padding:20px;border-radius:15px;text-align:center;font-weight:900;margin-bottom:15px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
+body{background:#080808;color:white}
+.header{background:#111;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #39FF14;position:sticky;top:0;z-index:10}
+.logo{font-size:22px;font-weight:900;color:#39FF14}.logo span{color:#FFEB00}
+.wallet{background:#FFEB00;color:black;padding:6px 16px;border-radius:20px;font-weight:900}
+.container{padding:15px;max-width:480px;margin:auto}
+.banner{background:linear-gradient(135deg,#39FF14,#FFEB00);color:black;padding:18px;border-radius:12px;text-align:center;font-weight:900;margin-bottom:15px}
 .card{background:#1A1A1A;border:1px solid #2a2a2a;border-radius:15px;padding:15px;margin-bottom:15px}
-.card h3{margin-bottom:8px}
-.info{color:#aaa;font-size:14px;margin-bottom:12px}
-.btn{width:100%;background:#39FF14;color:black;border:none;padding:13px;border-radius:10px;font-weight:800;font-size:16px}
-.btn2{background:#FFEB00}
-.bkash{background:#E2136E;padding:12px;border-radius:10px;text-align:center;font-weight:bold;margin:10px 0}
+.btn{width:100%;background:#39FF14;color:black;border:none;padding:13px;border-radius:10px;font-weight:800;font-size:16px;margin-top:8px}
+.bkashBox{background:#111;border:1px dashed #E2136E;padding:12px;border-radius:12px;text-align:center}
+.bkashNum{font-size:22px;font-weight:900;color:#FFEB00;letter-spacing:1px;margin:5px 0}
 input{width:100%;padding:13px;border-radius:10px;border:none;background:#222;color:white;margin:6px 0}
+.note{font-size:12px;color:#aaa;text-align:center;margin-top:8px}
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="logo">Ai <span>E-SPORTS</span></div>
   <div class="wallet">৳ 0</div>
 </div>
-
 <div class="container">
-  <div class="banner">🔥 AI E-SPORTS OFFICIAL 🔥<br>100% Trusted Tournament</div>
+  <div class="banner">🔥 Ai E-SPORTS TRUSTED TOURNAMENT 🔥</div>
 
   <div class="card">
-    <h3>🎮 Free Fire Solo Battle</h3>
-    <div class="info">Entry Fee: 50 TK | Win: 1000 TK | Time: Today 9 PM</div>
+    <h3>💰 Deposit System</h3>
+    <div class="bkashBox">
+      <div style="color:#E2136E;font-weight:800">bKash Personal - Send Money</div>
+      <div class="bkashNum">01344758887</div>
+      <div style="font-size:13px">এই নাম্বারে Send Money করুন</div>
+    </div>
+    
+    <input id="amount" type="number" placeholder="কত টাকা পাঠিয়েছেন? ex: 100">
+    <input id="sender" type="text" placeholder="যে নাম্বার থেকে পাঠিয়েছেন">
+    <input id="trxid" type="text" placeholder="bKash TrxID (ex: 9A7F5H2K1L)">
+    <button class="btn" onclick="submitDeposit()">SUBMIT DEPOSIT - TrxID Check</button>
+    <p class="note">TrxID ভুল দিলে টাকা যোগ হবে না। bKash App এর History তে TrxID পাবেন।</p>
+    <p id="msg" style="text-align:center;margin-top:10px;color:#39FF14;font-weight:bold"></p>
+  </div>
+
+  <div class="card">
+    <h3>🎮 Free Fire Solo - 9 PM</h3>
+    <p style="color:#aaa;font-size:14px;margin:6px 0">Entry: 50 TK | Win: 1000 TK</p>
     <button class="btn">JOIN NOW</button>
   </div>
-
-  <div class="card">
-    <h3>🎮 Free Fire Duo Battle</h3>
-    <div class="info">Entry Fee: 100 TK | Win: 2000 TK | Time: Today 10 PM</div>
-    <button class="btn btn2">JOIN NOW</button>
-  </div>
-
-  <div class="card">
-    <h3>💰 Deposit - bKash / Nagad</h3>
-    <div class="bkash">Personal: 017XX-XXXXXX - Send Money</div>
-    <input type="text" placeholder="bKash TrxID দাও (Example: 9A7F...)">
-    <input type="text" placeholder="তোমার bKash Number">
-    <button class="btn btn2">SUBMIT DEPOSIT</button>
-    <p style="font-size:12px;color:#aaa;margin-top:8px;text-align:center">TrxID Check করে 5 মিনিটে Wallet এ টাকা যোগ হবে</p>
-  </div>
-
 </div>
 
+<script>
+function submitDeposit(){
+  let amt = document.getElementById('amount').value;
+  let sender = document.getElementById('sender').value;
+  let trx = document.getElementById('trxid').value;
+  if(amt=="" || sender=="" || trx==""){ alert("সব ঘর পূরণ করুন!"); return; }
+  
+  // Local system - Admin panel এ দেখা যাবে
+  let data = {amount:amt, sender:sender, trxid:trx, number:"01344758887", time: new Date().toLocaleString()};
+  let all = JSON.parse(localStorage.getItem("deposits") || "[]");
+  all.push(data);
+  localStorage.setItem("deposits", JSON.stringify(all));
+  
+  document.getElementById('msg').innerText = "✅ Deposit Request পাঠানো হয়েছে! TrxID: "+trx+" - 5 মিনিটের মধ্যে চেক করা হবে";
+  document.getElementById('amount').value="";
+  document.getElementById('sender').value="";
+  document.getElementById('trxid').value="";
+}
+</script>
 </body>
 </html>
