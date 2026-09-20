@@ -1,1 +1,63 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>ADMIN</title><style>body{background:#050a18;color:#fff;font-family:sans-serif;padding:16px}input,select{width:100%;padding:12px;margin:6px 0;border-radius:10px;background:#101d38;border:1px solid #1e345e;color:#fff}button{padding:12px;border-radius:10px;border:none;font-weight:900} .card{background:#101d38;border-radius:16px;padding:14px;margin-bottom:12px;border:1px solid #1e345e}</style></head><body><div id="lock" style="max-width:400px;margin:50px auto;text-align:center"><h2>ADMIN LOGIN</h2><input id="pass" type="password" placeholder="Password"><button onclick="login()" style="width:100%;background:#2a5bff;color:#fff;margin-top:10px">LOGIN</button><p>Pass: admin123</p></div><div id="panel" style="display:none;max-width:700px;margin:0 auto"><h2>FF ARENA ADMIN</h2><div class="card"><h3>Add Room</h3><input id="title" placeholder="Title Ex: Solo BR"><select id="type"><option value="BR">BR</option><option value="CUSTOM">CUSTOM</option></select><input id="map" placeholder="Map"><input id="entry" type="number" placeholder="Entry"><input id="prize" placeholder="Prize"><input id="time" placeholder="Time"><button onclick="addRoom()" style="background:#00c853;color:#fff;width:100%">ADD ROOM</button></div><div class="card"><h3>Room List</h3><div id="roomList"></div></div><div class="card"><h3>Deposit List</h3><div id="depList"></div></div></div><script>function login(){if(document.getElementById('pass').value==='admin123'){document.getElementById('lock').style.display='none';document.getElementById('panel').style.display='block';load();}else alert('Wrong')}let rooms=JSON.parse(localStorage.getItem('ff_rooms')||'[]');function load(){let rl=document.getElementById('roomList');rl.innerHTML='';rooms.forEach(r=>{rl.innerHTML+=`<div style="border-bottom:1px solid #222;padding:8px 0"><b>${r.title}</b><br><input id="rid-${r.id}" placeholder="Room ID" value="${r.roomId||''}"><input id="rpass-${r.id}" placeholder="Pass" value="${r.pass||''}"><button onclick="saveRoom(${r.id})" style="background:#ff9800">SAVE</button> <button onclick="delRoom(${r.id})" style="background:#ff1744;color:#fff">DEL</button></div>`});let req=JSON.parse(localStorage.getItem('ff_dep_req')||'[]');document.getElementById('depList').innerHTML=req.map((d,i)=>`${d.name} ${d.amount}TK Trx:${d.trx}`).join('<br>')||'Empty'}function addRoom(){let r={id:Date.now(),type:document.getElementById('type').value,title:document.getElementById('title').value,map:document.getElementById('map').value,entry:parseInt(document.getElementById('entry').value),prize:document.getElementById('prize').value,time:document.getElementById('time').value,status:'UPCOMING',roomId:'',pass:''};rooms.push(r);localStorage.setItem('ff_rooms',JSON.stringify(rooms));load();}function saveRoom(id){let r=rooms.find(x=>x.id==id);r.roomId=document.getElementById('rid-'+id).value;r.pass=document.getElementById('rpass-'+id).value;localStorage.setItem('ff_rooms',JSON.stringify(rooms));alert('Saved')}function delRoom(id){rooms=rooms.filter(x=>x.id!=id);localStorage.setItem('ff_rooms',JSON.stringify(rooms));load();}</script></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FF Admin - Pro</title>
+<style>
+*{box-sizing:border-box}body{background:#0a0a0a;color:#fff;font-family:sans-serif;padding:15px;margin:0}
+input,button,select{width:100%;padding:14px;margin:7px 0;border-radius:10px;border:1px solid #333;background:#1a1a1a;color:#fff;font-size:15px}
+button{background:linear-gradient(90deg,#00ff88,#00cc6a);color:#000;font-weight:900;font-size:16px;border:none}
+h2{color:#00ff88;text-align:center}
+.card{background:#161616;border:1px solid #222;padding:14px;border-radius:12px;margin:10px 0}
+.bkash-box{background:#e2136e;padding:12px;border-radius:10px;text-align:center;font-weight:bold;margin:10px 0}
+</style>
+</head>
+<body>
+<h2>🔥 FF ADMIN PRO 🔥</h2>
+<div id="a">
+<input id="p" type="password" placeholder="Password = admin123">
+<button onclick="login()">LOGIN</button>
+</div>
+<div id="b" style="display:none">
+<div class="card">
+<h3>💰 Payment Setting</h3>
+<input id="bk" placeholder="Your bKash Personal Number - 01XXXXXXXXX">
+<button onclick="saveBk()">SAVE BKASH NUMBER</button>
+<p id="bkShow" style="color:#00ff88"></p>
+</div>
+<div class="card">
+<h3>➕ Add New Tournament</h3>
+<input id="t" placeholder="Title - Ex: SOLO FULL MAP 9PM">
+<input id="e" placeholder="Entry Fee - 50">
+<input id="pr" placeholder="Prize Pool - 4000">
+<input id="ti" placeholder="Time - Today 9:00 PM">
+<button onclick="addRoom()">ADD TOURNAMENT</button>
+</div>
+<h3>📋 All Tournaments & Joins</h3>
+<div id="l"></div>
+<div id="joins"></div>
+</div>
+<script>
+let bkNum = localStorage.getItem('bkash')||'';
+function login(){ if(p.value=='admin123'){a.style.display='none';b.style.display='block';bk.value=bkNum;showBk();load()} else alert('Wrong Password') }
+function saveBk(){ localStorage.setItem('bkash', bk.value); bkNum=bk.value; showBk(); alert('bKash Saved: '+bk.value) }
+function showBk(){ bkShow.innerText = bkNum? 'Current bKash: '+bkNum : 'No bKash Set Yet'; }
+function addRoom(){
+ let r=JSON.parse(localStorage.getItem('rooms')||'[]');
+ if(!t.value||!e.value){alert('Title & Fee needed');return}
+ r.push({id:Date.now(), title:t.value, entry:e.value, prize:pr.value, time:ti.value, status:'Open'});
+ localStorage.setItem('rooms', JSON.stringify(r));
+ t.value=''; e.value=''; pr.value=''; ti.value=''; load();
+}
+function load(){
+ let r=JSON.parse(localStorage.getItem('rooms')||'[]');
+ let j=JSON.parse(localStorage.getItem('joins')||'[]');
+ l.innerHTML=r.map(x=>`<div class=card><b>${x.title}</b><br>Entry: ${x.entry}Tk | Prize: ${x.prize}Tk<br>Time: ${x.time}<br><button onclick="del(${x.id})" style="background:#ff3333;color:#fff;margin-top:8px">DELETE</button></div>`).join('')||'No Room';
+ joins.innerHTML='<h3>💳 Payment Requests</h3>'+ (j.map((y,i)=>`<div class=card>Room: ${y.room}<br>Player: ${y.name}<br>UID: ${y.uid}<br>Sender: ${y.sender}<br>TrxID: <b style=color:#00ff88>${y.trx}</b><br>Time: ${y.time}<br><button onclick="approve(${i})">APPROVE</button></div>`).join('')||'No payments yet');
+}
+function del(id){ let r=JSON.parse(localStorage.getItem('rooms')||'[]').filter(x=>x.id!=id); localStorage.setItem('rooms', JSON.stringify(r)); load() }
+function approve(i){ let j=JSON.parse(localStorage.getItem('joins')||'[]'); alert('Approved: '+j[i].trx); j.splice(i,1); localStorage.setItem('joins', JSON.stringify(j)); load() }
+</script>
+</body>
+</html>
