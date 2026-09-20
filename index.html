@@ -2,15 +2,15 @@
 <html lang="bn">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FF ARENA BD - ZVY</title>
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Inter:wght@600;800&display=swap" rel="stylesheet">
+<title>FF ARENA BD - ZVY TOUR</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Inter:wght@700&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,sans-serif}
 body{background:#02050f;color:#fff}
-.header{position:sticky;top:0;z-index:99;background:#000;border-bottom:2px solid #ff0040;padding:12px 16px;display:flex;justify-content:space-between}
-.logo{font-family:Orbitron;font-weight:900}.logo span{color:#00e5ff}
-.main{max-width:500px;margin:auto;padding:14px;padding-bottom:100px}
-.wallet{background:linear-gradient(135deg,#111a2f,#1a2340);border:1px solid #ff0040;border-radius:18px;padding:18px;margin:14px 0}
+.header{background:#000;border-bottom:2px solid #ff0040;padding:12px 16px;display:flex;justify-content:space-between;position:sticky;top:0;z-index:99}
+.logo{font-family:Orbitron;font-weight:900} .logo span{color:#00e5ff}
+.main{max-width:500px;margin:auto;padding:14px 14px 100px}
+.wallet{background:linear-gradient(135deg,#111a2f,#1a2340);border:1px solid #ff0040;border-radius:18px;padding:18px}
 .bal{font-family:Orbitron;font-size:38px;color:#00e5ff;font-weight:900}
 .btns{display:flex;gap:10px;margin-top:12px}.btn{flex:1;padding:14px;border-radius:12px;border:none;font-weight:900}
 .dep{background:linear-gradient(90deg,#00c853,#00e676);color:#fff}.with{background:#fff;color:#000}
@@ -24,73 +24,67 @@ body{background:#02050f;color:#fff}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">FF ARENA <span>BD</span></div><div style="font-size:10px;background:#ff0040;padding:4px 8px;border-radius:4px">ZVY TOUR</div></div>
-
+<div class="header"><div class="logo">FF ARENA <span>BD</span></div><a href="admin.html" style="color:#5a7ab0;font-size:11px;text-decoration:none">ADMIN LOGIN</a></div>
 <div class="main">
-<!-- WALLET -->
 <div class="wallet">
-<div style="display:flex;justify-content:space-between"><span style="color:#8aa0c5;font-size:12px">YOUR WALLET</span><span style="color:#00ff88;font-size:11px">● Active</span></div>
+<div style="display:flex;justify-content:space-between"><span style="color:#8aa0c5;font-size:12px">YOUR WALLET</span><span id="status" style="color:#ffaa00;font-size:11px"></span></div>
 <div class="bal" id="balText">৳ 0.00</div>
-<div style="color:#5a7ab0;font-size:11px">Deposit করে Join করুন</div>
-<div class="btns">
-<button class="btn dep" onclick="openDeposit()">+ Deposit</button>
-<button class="btn with" onclick="alert('Withdraw: 01344758887 এ যোগাযোগ করুন')">Withdraw</button>
+<div class="btns"><button class="btn dep" onclick="openDeposit()">+ Deposit</button><button class="btn with" onclick="alert('Withdraw এর জন্য 01344758887 এ যোগাযোগ করুন')">Withdraw</button></div>
 </div>
-</div>
-
-<h3 style="font-family:Orbitron;color:#ff2a6d;margin-top:10px;font-size:14px">🔥 ZVY TOUR LOBBY</h3>
+<h3 style="font-family:Orbitron;color:#ff2a6d;margin-top:16px;font-size:14px">🔥 ZVY TOUR LOBBY</h3>
 <div id="list"></div>
 </div>
 
-<!-- DEPOSIT MODAL -->
 <div class="modal" id="dModal"><div class="modalBox">
-<h3 style="font-family:Orbitron">DEPOSIT AMOUNT</h3>
-<div class="bkash">bKash Personal: <br><span style="font-size:22px">01344758887</span><br><small>Send Money করুন</small></div>
-<input id="depAmount" type="number" placeholder="Amount - কত টাকা পাঠিয়েছেন? ex: 100">
-<input id="depSender" placeholder="bKash Sender Number - যে নাম্বার থেকে পাঠিয়েছেন">
+<h3 style="font-family:Orbitron">DEPOSIT</h3>
+<div class="bkash">bKash Personal<br><span style="font-size:24px">01344758887</span><br><small>Send Money করুন</small></div>
+<input id="depAmount" type="number" placeholder="Amount ex: 100">
+<input id="depSender" placeholder="bKash Sender Number">
 <input id="depTrx" placeholder="bKash TrxID">
-<button class="join" style="background:linear-gradient(90deg,#00c853,#00e676)" onclick="submitDeposit()">DEPOSIT CONFIRM</button>
+<button class="join" style="background:linear-gradient(90deg,#00c853,#00e676)" onclick="submitDeposit()">SUBMIT TO ADMIN</button>
 <button onclick="closeAll()" style="width:100%;margin-top:8px;background:#1a233a;color:#fff;padding:10px;border:none;border-radius:8px">Cancel</button>
-<p style="font-size:10px;color:#5a7ab0;margin-top:8px;text-align:center">TrxID দিলে Auto Wallet এ Add হবে (Demo). Real এ Admin Approve করবে।</p>
 </div></div>
 
-<!-- JOIN MODAL -->
 <div class="modal" id="jModal"><div class="modalBox">
-<h3 id="mTitle" style="font-family:Orbitron">JOIN TOUR</h3>
-<div style="background:#111a2f;padding:10px;border-radius:8px;margin:8px 0;font-size:12px">Entry Fee: <span id="mFee" style="color:#00e5ff;font-weight:900"></span> | Your Balance: <span id="mBal" style="color:#00ff88;font-weight:900"></span></div>
-<input id="ffName" placeholder="Free Fire Name">
-<input id="ffUid" placeholder="Free Fire UID">
-<button class="join" onclick="submitJoin()">JOIN WITH WALLET BALANCE</button>
+<h3 id="mTitle" style="font-family:Orbitron">JOIN</h3>
+<div style="background:#111a2f;padding:10px;border-radius:8px;margin:8px 0;font-size:12px">Fee: <b id="mFee" style="color:#00e5ff"></b> | Balance: <b id="mBal" style="color:#00ff88"></b></div>
+<input id="ffName" placeholder="Free Fire Name"><input id="ffUid" placeholder="Free Fire UID">
+<button class="join" onclick="submitJoin()">JOIN NOW</button>
 <button onclick="closeAll()" style="width:100%;margin-top:8px;background:#1a233a;color:#fff;padding:10px;border:none;border-radius:8px">Cancel</button>
 </div></div>
 
 <script>
 let balance = parseInt(localStorage.getItem('ff_balance')||'0');
-let curRoom=null;
-let rooms=[
-{title:"ZVY SOLO - Daily",entry:50,prize:"5,000",time:"Today 8PM",type:"SOLO"},
-{title:"ZVY DUO - Daily",entry:100,prize:"10,000",time:"Today 9:30PM",type:"DUO"},
-{title:"ZVY SQUAD - Final",entry:200,prize:"25,000",time:"Tomorrow 8PM",type:"SQUAD"}
-];
-function updateBal(){document.getElementById('balText').innerText='৳ '+balance+'.00';localStorage.setItem('ff_balance',balance)}
-function render(){
-document.getElementById('list').innerHTML=rooms.map(r=>`<div class="card"><div style="display:flex;justify-content:space-between"><span class="mode">${r.type}</span><span style="color:#00ff88;font-size:12px;font-weight:800">৳${r.prize}</span></div><b style="display:block;margin:8px 0">${r.title}</b><div style="color:#5a7ab0;font-size:11px">Entry: ${r.entry} TK • ${r.time}</div><button class="join" onclick="openJoin('${r.title}',${r.entry})">JOIN - ${r.entry} TK</button></div>`).join('');
+let cur=null;
+let rooms=[{title:"ZVY SOLO",entry:50,prize:"5,000",time:"Today 8PM",type:"SOLO"},{title:"ZVY DUO",entry:100,prize:"10,000",time:"Today 9:30PM",type:"DUO"},{title:"ZVY SQUAD",entry:200,prize:"25,000",time:"Tomorrow 8PM",type:"SQUAD"}];
+function updateBal(){
+ document.getElementById('balText').innerText='৳ '+balance+'.00';
+ let pend=JSON.parse(localStorage.getItem('ff_pending')||'[]');
+ if(pend.length>0) document.getElementById('status').innerText='⏳ '+pend.length+' Pending';
+ localStorage.setItem('ff_balance',balance);
 }
+function render(){document.getElementById('list').innerHTML=rooms.map(r=>`<div class="card"><div style="display:flex;justify-content:space-between"><span class="mode">${r.type}</span><span style="color:#00ff88;font-weight:800">৳${r.prize}</span></div><b style="display:block;margin:8px 0">${r.title}</b><div style="color:#5a7ab0;font-size:11px">Entry ${r.entry} TK • ${r.time}</div><button class="join" onclick="openJoin('${r.title}',${r.entry})">JOIN - ${r.entry} TK</button></div>`).join('')}
 function openDeposit(){document.getElementById('dModal').style.display='flex'}
-function openJoin(title,fee){curRoom={title,fee};document.getElementById('mTitle').innerText=title;document.getElementById('mFee').innerText=fee+' TK';document.getElementById('mBal').innerText=balance+' TK';document.getElementById('jModal').style.display='flex'}
+function openJoin(t,f){cur={title:t,fee:f};document.getElementById('mTitle').innerText=t;document.getElementById('mFee').innerText=f+' TK';document.getElementById('mBal').innerText=balance+' TK';document.getElementById('jModal').style.display='flex'}
 function closeAll(){document.getElementById('dModal').style.display='none';document.getElementById('jModal').style.display='none'}
 function submitDeposit(){
-let amt=parseInt(document.getElementById('depAmount').value);
-let trx=document.getElementById('depTrx').value;
-if(!amt||!trx){alert('Amount & TrxID দিন');return}
-balance+=amt;updateBal();closeAll();alert('✅ Deposit Success!\n৳'+amt+' Wallet এ Add হয়েছে\nTrxID: '+trx);
+ let amt=parseInt(depAmount.value); let sender=depSender.value; let trx=depTrx.value;
+ if(!amt||!sender||!trx){alert('সব ঘর পূরণ করুন');return}
+ let list=JSON.parse(localStorage.getItem('ff_deposits')||'[]');
+ list.push({id:Date.now(),amount:amt,sender:sender,trx:trx,time:new Date().toLocaleString(),status:'pending'});
+ localStorage.setItem('ff_deposits',JSON.stringify(list));
+ let pend=JSON.parse(localStorage.getItem('ff_pending')||'[]'); pend.push(amt); localStorage.setItem('ff_pending',JSON.stringify(pend));
+ closeAll(); updateBal(); alert('✅ Admin এর কাছে চলে গেছে!\nAmount: '+amt+' TK\nTrxID: '+trx+'\nAdmin Approve করলে Wallet এ যোগ হবে।');
 }
 function submitJoin(){
-let name=document.getElementById('ffName').value;
-let uid=document.getElementById('ffUid').value;
-if(!name||!uid){alert('FF Name & UID দিন');return}
-if(balance < curRoom.fee){alert('❌ Balance কম! Deposit করুন\nআপনার Balance: '+balance+' TK\nলাগবে: '+curRoom.fee+' TK');closeAll();openDeposit();return}
-balance-=curRoom.fee;updateBal();closeAll();alert('🎉 JOIN SUCCESS!\n'+curRoom.title+'\nPlayer: '+name+'\nEntry: '+curRoom.fee+' TK কাটা হয়েছে\nবাকি Balance: '+balance+' TK');
+ let name=ffName.value; let uid=ffUid.value;
+ if(!name||!uid){alert('Name & UID দিন');return}
+ if(balance < cur.fee){alert('Balance কম! Deposit করুন');closeAll();openDeposit();return}
+ balance-=cur.fee; updateBal();
+ let joins=JSON.parse(localStorage.getItem('ff_joins')||'[]');
+ joins.push({room:cur.title,fee:cur.fee,name:name,uid:uid,time:new Date().toLocaleString()});
+ localStorage.setItem('ff_joins',JSON.stringify(joins));
+ closeAll(); alert('🎉 JOIN SUCCESS!\nRoom: '+cur.title+'\nবাকি Balance: '+balance+' TK');
 }
 updateBal();render();
 </script>
