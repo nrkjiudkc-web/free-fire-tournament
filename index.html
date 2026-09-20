@@ -1,8 +1,7 @@
         <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FF ARENA - Official Tournament BD</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800&family=Inter:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
@@ -12,120 +11,86 @@ body{background:#070d1c;color:#fff}
 .logo{font-family:'Orbitron';color:#00e5ff;font-weight:800;font-size:20px}
 .main{max-width:480px;margin:0 auto;padding:16px;padding-bottom:90px}
 .wallet{background:linear-gradient(135deg,#13244a,#1e3a6e);border-radius:24px;padding:22px;border:1px solid #2c4a7c;margin:10px 0 20px}
-.wallet-top{display:flex;justify-content:space-between;align-items:center}
-.user-name{font-size:14px;color:#9bb0d0}
-.user-name b{color:#fff;font-size:16px;display:block}
-.bal{font-size:42px;font-weight:800;margin:14px 0 4px}
-.bal span{color:#00e5ff}
-.tag{color:#7f9ac0;font-size:12px;margin-bottom:18px}
-.btns{display:flex;gap:10px}
-.btn{flex:1;padding:14px;border-radius:14px;border:none;font-weight:800;cursor:pointer}
-.dep{background:#00c853;color:#fff}
-.wit{background:#fff;color:#0a1931}
+.bal{font-size:42px;font-weight:800;margin:12px 0 4px}.bal span{color:#00e5ff}
+.btns{display:flex;gap:10px}.btn{flex:1;padding:14px;border-radius:14px;border:none;font-weight:800;cursor:pointer}.dep{background:#00c853;color:#fff}.wit{background:#fff;color:#0a1931}
 .card{background:#111e38;border:1px solid #21365e;border-radius:20px;padding:16px;margin-bottom:14px}
-.live{float:right;background:#ff1744;color:#fff;font-size:10px;padding:5px 10px;border-radius:20px;font-weight:800}
-.join{width:100%;background:linear-gradient(90deg,#2a5bff,#5a82ff);color:#fff;border:none;padding:14px;border-radius:14px;font-weight:800;margin-top:12px;font-size:15px}
-.info{color:#8da6c9;font-size:12px;margin:6px 0}
-.stats{background:#0c1730;border-radius:12px;padding:12px;display:flex;justify-content:space-between;margin-top:10px;font-size:13px}
+.join{width:100%;background:linear-gradient(90deg,#2a5bff,#5a82ff);color:#fff;border:none;padding:14px;border-radius:14px;font-weight:800;margin-top:12px}
 #loginScreen{position:fixed;inset:0;background:#070d1c;z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
 .loginBox{background:#101e38;border:1px solid #243a64;border-radius:24px;padding:26px;width:100%;max-width:380px;text-align:center}
-.loginBox h1{font-family:'Orbitron';color:#00e5ff;font-size:26px;margin-bottom:6px}
-.loginBox p{color:#8da6c9;font-size:13px;margin-bottom:20px}
-.loginBox input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid #243a64;background:#0a152d;color:#fff;margin-bottom:12px;outline:none;font-size:14px}
-.loginBox input:focus{border-color:#2a5bff}
-.loginBtn{width:100%;padding:14px;background:#2a5bff;color:#fff;border:none;border-radius:12px;font-weight:800;font-size:16px;margin-top:8px}
-.small{color:#5a7296;font-size:11px;margin-top:14px}
+.loginBox input{width:100%;padding:14px;border-radius:12px;border:1px solid #243a64;background:#0a152d;color:#fff;margin-bottom:12px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modalBox{background:#101e38;border-radius:20px;padding:22px;width:100%;max-width:380px}
+.modalBox input{width:100%;padding:12px;border-radius:10px;border:1px solid #243a64;background:#0a152d;color:#fff;margin-bottom:10px}
 </style>
 </head>
 <body>
 
 <div id="loginScreen">
 <div class="loginBox">
-<h1>FF ARENA</h1>
-<p>Real Tournament Platform - Bangladesh</p>
-<input type="text" id="name" placeholder="তোমার নাম লিখো">
-<input type="text" id="uid" placeholder="Free Fire UID">
-<input type="text" id="phone" placeholder="bKash Number">
-<button class="loginBtn" onclick="login()">Login & Open App</button>
-<div class="small">Login করলে Wallet Active হবে • 100% Secure & Real</div>
+<h1 style="font-family:'Orbitron';color:#00e5ff">FF ARENA</h1>
+<p style="color:#8da6c9;font-size:13px;margin:8px 0 18px">Real Tournament Platform BD</p>
+<input type="text" id="name" placeholder="তোমার নাম"><input type="text" id="uid" placeholder="Free Fire UID"><input type="text" id="phone" placeholder="bKash Number">
+<button onclick="login()" style="width:100%;padding:14px;background:#2a5bff;color:#fff;border:none;border-radius:12px;font-weight:800">Login & Open</button>
 </div>
 </div>
 
-<div class="header">
-<div class="logo">FF ARENA</div>
-<div id="headerUser" style="font-size:13px">👤</div>
-</div>
+<div class="header"><div class="logo">FF ARENA</div><div id="headerUser">👤</div></div>
 
 <div class="main">
 <div class="wallet">
-<div class="wallet-top">
-<div class="user-name">Welcome, <b id="showName">Player</b> <span id="showUid" style="color:#7f9ac0;font-size:12px"></span></div>
-<div style="background:#00e5ff22;color:#00e5ff;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:800">VERIFIED</div>
-</div>
+<div style="color:#9bb0d0;font-size:13px">Welcome, <b id="showName" style="color:#fff"></b></div>
 <div class="bal">৳ <span id="bal">0.00</span></div>
-<div class="tag">✅ Secure Wallet • Real Balance • Instant bKash</div>
-<div class="btns">
-<button class="btn dep" onclick="deposit()">+ Deposit</button>
-<button class="btn wit" onclick="withdraw()">Withdraw</button>
+<div style="color:#7f9ac0;font-size:12px;margin-bottom:16px">✅ Secure Wallet • Real Balance</div>
+<div class="btns"><button class="btn dep" onclick="openDep()">+ Deposit</button><button class="btn wit" onclick="openWit()">Withdraw</button></div>
 </div>
-</div>
-
-<h3 style="margin:4px 0 12px">🔥 Available Tournaments</h3>
-
-<div class="card">
-<span class="live">● LIVE</span>
-<h3>Solo Battle</h3>
-<div class="info">SOLO • Bermuda • 48/100 Players • Today 8:00 PM</div>
-<div class="stats"><span>Entry: <b style="color:#00ff8c">50 TK</b></span><span>Prize: <b style="color:#ffeb3b">5,000 TK</b></span></div>
-<button class="join" onclick="joinT('Solo')">Join Now - 50 TK</button>
+<h3 style="margin:4px 0 12px">🔥 Tournaments</h3>
+<div class="card"><h3>Solo Battle</h3><p style="color:#8da6c9;font-size:12px">Entry 50 TK • Prize 5,000 TK • Today 8PM</p><button class="join" onclick="joinT('Solo')">Join Now</button></div>
+<div class="card"><h3>Duo Battle</h3><p style="color:#8da6c9;font-size:12px">Entry 100 TK • Prize 10,000 TK • Today 9:30PM</p><button class="join" onclick="joinT('Duo')">Join Now</button></div>
 </div>
 
-<div class="card">
-<h3>Duo Battle</h3>
-<div class="info">DUO • Purgatory • 12/50 Teams • Today 9:30 PM</div>
-<div class="stats"><span>Entry: <b style="color:#00ff8c">100 TK</b></span><span>Prize: <b style="color:#ffeb3b">10,000 TK</b></span></div>
-<button class="join" onclick="joinT('Duo')">Join Now - 100 TK</button>
-</div>
+<div id="depModal" class="modal"><div class="modalBox">
+<h3 style="margin-bottom:12px">Deposit - bKash</h3>
+<p style="color:#8da6c9;font-size:12px;margin-bottom:12px">Send Money করো: <b style="color:#00ff8c">017XXXXXXXX</b><br>তারপর নিচের তথ্য দাও</p>
+<input type="number" id="depAmount" placeholder="কত টাকা পাঠিয়েছো? Ex: 100">
+<input type="text" id="depTrx" placeholder="bKash TrxID">
+<button onclick="submitDep()" style="width:100%;padding:13px;background:#00c853;color:#fff;border:none;border-radius:10px;font-weight:800">Submit Deposit Request</button>
+<button onclick="closeModals()" style="width:100%;margin-top:8px;padding:10px;background:transparent;color:#8da6c9;border:none">Cancel</button>
+</div></div>
 
-<div class="card">
-<h3>Squad Battle - Grand Final</h3>
-<div class="info">SQUAD • Bermuda • 20/25 Teams • Tomorrow 8:00 PM</div>
-<div class="stats"><span>Entry: <b style="color:#00ff8c">200 TK</b></span><span>Prize: <b style="color:#ffeb3b">25,000 TK</b></span></div>
-<button class="join" onclick="joinT('Squad')">Join Now - 200 TK</button>
-</div>
-
-<p style="text-align:center;color:#4a5f82;font-size:11px;margin-top:30px">© 2026 FF ARENA • Official Tournament Platform BD</p>
-</div>
+<div id="witModal" class="modal"><div class="modalBox">
+<h3 style="margin-bottom:12px">Withdraw - bKash</h3>
+<input type="number" id="witAmount" placeholder="কত টাকা তুলবে? Min 500">
+<input type="text" id="witPhone" placeholder="bKash Number">
+<button onclick="submitWit()" style="width:100%;padding:13px;background:#fff;color:#0a1931;border:none;border-radius:10px;font-weight:800">Submit Withdraw Request</button>
+<button onclick="closeModals()" style="width:100%;margin-top:8px;padding:10px;background:transparent;color:#8da6c9;border:none">Cancel</button>
+</div></div>
 
 <script>
-function checkLogin(){
-let n=localStorage.getItem('ff_name');
-if(n){
-document.getElementById('loginScreen').style.display='none';
-document.getElementById('showName').innerText=n;
-document.getElementById('showUid').innerText='UID: '+localStorage.getItem('ff_uid');
-document.getElementById('headerUser').innerText='👤 '+n;
-document.getElementById('bal').innerText=(localStorage.getItem('ff_bal')||0)+'.00';
-}
-}
+const GOOGLE_SHEET_URL = "PASTE_YOUR_GOOGLE_LINK_HERE";
+function checkLogin(){let n=localStorage.getItem('ff_name');if(n){document.getElementById('loginScreen').style.display='none';document.getElementById('showName').innerText=n;document.getElementById('headerUser').innerText='👤 '+n;document.getElementById('bal').innerText=(localStorage.getItem('ff_bal')||0)+'.00';}}
 checkLogin();
-function login(){
-let name=document.getElementById('name').value;
-let uid=document.getElementById('uid').value;
-let phone=document.getElementById('phone').value;
-if(!name || !uid || !phone){alert('সব ঘর পূরণ করো ভাই');return}
-localStorage.setItem('ff_name',name);
-localStorage.setItem('ff_uid',uid);
-localStorage.setItem('ff_phone',phone);
-if(!localStorage.getItem('ff_bal')) localStorage.setItem('ff_bal',0);
-checkLogin();
-alert('Login সফল! Welcome '+name);
+function login(){let n=document.getElementById('name').value,u=document.getElementById('uid').value,p=document.getElementById('phone').value;if(!n||!u||!p){alert('সব ঘর পূরণ করো');return}localStorage.setItem('ff_name',n);localStorage.setItem('ff_uid',u);localStorage.setItem('ff_phone',p);if(!localStorage.getItem('ff_bal'))localStorage.setItem('ff_bal',0);sendToSheet('LOGIN',n,u,p,'','');checkLogin();}
+function openDep(){document.getElementById('depModal').style.display='flex'}function openWit(){document.getElementById('witModal').style.display='flex'}function closeModals(){document.getElementById('depModal').style.display='none';document.getElementById('witModal').style.display='none'}
+function sendToSheet(type,name,uid,phone,amount,trxid){
+if(GOOGLE_SHEET_URL.includes('PASTE')) return;
+let form = new FormData();
+form.append('type',type);form.append('name',name);form.append('uid',uid);form.append('phone',phone);form.append('amount',amount);form.append('trxid',trxid);
+fetch(GOOGLE_SHEET_URL,{method:'POST',body:form,mode:'no-cors'});
 }
-function deposit(){
-let a=prompt('bKash Number: 017XXXXXXXX\nকত টাকা পাঠিয়েছো?');
-if(a) alert('Deposit Request গেছে! Admin 2 মিনিটে Balance Add করে দেবে');
+function submitDep(){
+let amt=document.getElementById('depAmount').value,trx=document.getElementById('depTrx').value;
+if(!amt||!trx){alert('Amount ও TrxID দাও');return}
+let n=localStorage.getItem('ff_name'),u=localStorage.getItem('ff_uid'),p=localStorage.getItem('ff_phone');
+sendToSheet('DEPOSIT',n,u,p,amt,trx);
+alert('Deposit Request Real ভাবে পাঠানো হয়েছে! তোমার Sheet এ চলে গেছে। তুমি চেক করে Balance Add করে দাও।');closeModals();
 }
-function withdraw(){alert('Withdraw এর জন্য সর্বনিম্ন 500 TK লাগবে');}
+function submitWit(){
+let amt=document.getElementById('witAmount').value,ph=document.getElementById('witPhone').value;
+if(!amt||!ph){alert('সব দাও');return}
+let n=localStorage.getItem('ff_name'),u=localStorage.getItem('ff_uid');
+sendToSheet('WITHDRAW',n,u,ph,amt,'');
+alert('Withdraw Request পাঠানো হয়েছে!');closeModals();
+}
 function joinT(t){alert(t+' Tournament এ Join সফল! Room ID 15 মিনিট আগে দেওয়া হবে');}
 </script>
 </body>
