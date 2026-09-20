@@ -1,63 +1,30 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>FF Admin - Pro</title>
-<style>
-*{box-sizing:border-box}body{background:#0a0a0a;color:#fff;font-family:sans-serif;padding:15px;margin:0}
-input,button,select{width:100%;padding:14px;margin:7px 0;border-radius:10px;border:1px solid #333;background:#1a1a1a;color:#fff;font-size:15px}
-button{background:linear-gradient(90deg,#00ff88,#00cc6a);color:#000;font-weight:900;font-size:16px;border:none}
-h2{color:#00ff88;text-align:center}
-.card{background:#161616;border:1px solid #222;padding:14px;border-radius:12px;margin:10px 0}
-.bkash-box{background:#e2136e;padding:12px;border-radius:10px;text-align:center;font-weight:bold;margin:10px 0}
-</style>
-</head>
-<body>
-<h2>🔥 FF ADMIN PRO 🔥</h2>
-<div id="a">
-<input id="p" type="password" placeholder="Password = admin123">
-<button onclick="login()">LOGIN</button>
-</div>
-<div id="b" style="display:none">
-<div class="card">
-<h3>💰 Payment Setting</h3>
-<input id="bk" placeholder="Your bKash Personal Number - 01XXXXXXXXX">
-<button onclick="saveBk()">SAVE BKASH NUMBER</button>
-<p id="bkShow" style="color:#00ff88"></p>
-</div>
-<div class="card">
-<h3>➕ Add New Tournament</h3>
-<input id="t" placeholder="Title - Ex: SOLO FULL MAP 9PM">
-<input id="e" placeholder="Entry Fee - 50">
-<input id="pr" placeholder="Prize Pool - 4000">
-<input id="ti" placeholder="Time - Today 9:00 PM">
-<button onclick="addRoom()">ADD TOURNAMENT</button>
-</div>
-<h3>📋 All Tournaments & Joins</h3>
-<div id="l"></div>
-<div id="joins"></div>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin - FF ARENA</title>
+<style>body{background:#02050f;color:#fff;font-family:sans-serif;padding:16px} .card{background:#111a2f;border:1px solid #22345a;border-radius:12px;padding:12px;margin:10px 0} .btn{padding:8px 14px;border:none;border-radius:8px;font-weight:800;margin-right:6px} .ap{background:#00c853;color:#fff} .rj{background:#ff0040;color:#fff} input{padding:10px;border-radius:8px;border:1px solid #2a3a5a;background:#02050f;color:#fff}</style>
+</head><body>
+<h2>🔐 Admin Panel - FF ARENA BD</h2>
+<div id="login"><input id="pass" type="password" placeholder="Admin Password"><button class="btn ap" onclick="login()">Login</button><p style="color:#5a7ab0;font-size:12px">Password: admin123 (পরে চেঞ্জ করে দিবো)</p></div>
+<div id="panel" style="display:none">
+<h3>💰 Deposit Requests</h3><div id="depList"></div>
+<h3 style="margin-top:20px">🎮 Join List</h3><div id="joinList"></div>
+<button class="btn" style="background:#333;color:#fff;margin-top:20px" onclick="clearAll()">Clear All Data</button>
 </div>
 <script>
-let bkNum = localStorage.getItem('bkash')||'';
-function login(){ if(p.value=='admin123'){a.style.display='none';b.style.display='block';bk.value=bkNum;showBk();load()} else alert('Wrong Password') }
-function saveBk(){ localStorage.setItem('bkash', bk.value); bkNum=bk.value; showBk(); alert('bKash Saved: '+bk.value) }
-function showBk(){ bkShow.innerText = bkNum? 'Current bKash: '+bkNum : 'No bKash Set Yet'; }
-function addRoom(){
- let r=JSON.parse(localStorage.getItem('rooms')||'[]');
- if(!t.value||!e.value){alert('Title & Fee needed');return}
- r.push({id:Date.now(), title:t.value, entry:e.value, prize:pr.value, time:ti.value, status:'Open'});
- localStorage.setItem('rooms', JSON.stringify(r));
- t.value=''; e.value=''; pr.value=''; ti.value=''; load();
-}
+function login(){if(pass.value=='admin123'){loginDiv();}else alert('Wrong Password')}
+function loginDiv(){document.getElementById('login').style.display='none';document.getElementById('panel').style.display='block';load()}
 function load(){
- let r=JSON.parse(localStorage.getItem('rooms')||'[]');
- let j=JSON.parse(localStorage.getItem('joins')||'[]');
- l.innerHTML=r.map(x=>`<div class=card><b>${x.title}</b><br>Entry: ${x.entry}Tk | Prize: ${x.prize}Tk<br>Time: ${x.time}<br><button onclick="del(${x.id})" style="background:#ff3333;color:#fff;margin-top:8px">DELETE</button></div>`).join('')||'No Room';
- joins.innerHTML='<h3>💳 Payment Requests</h3>'+ (j.map((y,i)=>`<div class=card>Room: ${y.room}<br>Player: ${y.name}<br>UID: ${y.uid}<br>Sender: ${y.sender}<br>TrxID: <b style=color:#00ff88>${y.trx}</b><br>Time: ${y.time}<br><button onclick="approve(${i})">APPROVE</button></div>`).join('')||'No payments yet');
+ let deps=JSON.parse(localStorage.getItem('ff_deposits')||'[]');
+ document.getElementById('depList').innerHTML=deps.length==0?'No Request':deps.map(d=>`<div class="card"><b>৳${d.amount}</b> - ${d.sender}<br>Trx: ${d.trx}<br><small>${d.time} - ${d.status}</small><br><br><button class="btn ap" onclick="approve(${d.id},${d.amount})">✅ Approve</button><button class="btn rj" onclick="reject(${d.id})">❌ Reject</button></div>`).join('');
+ let joins=JSON.parse(localStorage.getItem('ff_joins')||'[]');
+ document.getElementById('joinList').innerHTML=joins.length==0?'No Joins':joins.map(j=>`<div class="card"><b>${j.room}</b> - Fee ${j.fee}<br>Player: ${j.name} | UID: ${j.uid}<br><small>${j.time}</small></div>`).join('');
 }
-function del(id){ let r=JSON.parse(localStorage.getItem('rooms')||'[]').filter(x=>x.id!=id); localStorage.setItem('rooms', JSON.stringify(r)); load() }
-function approve(i){ let j=JSON.parse(localStorage.getItem('joins')||'[]'); alert('Approved: '+j[i].trx); j.splice(i,1); localStorage.setItem('joins', JSON.stringify(j)); load() }
+function approve(id,amt){
+ let deps=JSON.parse(localStorage.getItem('ff_deposits')||'[]');
+ let bal=parseInt(localStorage.getItem('ff_balance')||'0'); bal+=amt; localStorage.setItem('ff_balance',bal);
+ deps=deps.map(d=>d.id==id?{...d,status:'approved'}:d); localStorage.setItem('ff_deposits',JSON.stringify(deps));
+ alert('Approved! ৳'+amt+' Added to Player Wallet'); load();
+}
+function reject(id){let deps=JSON.parse(localStorage.getItem('ff_deposits')||'[]'); deps=deps.filter(d=>d.id!=id); localStorage.setItem('ff_deposits',JSON.stringify(deps)); load();}
+function clearAll(){if(confirm('সব ডাটা মুছে যাবে!')){localStorage.clear();location.reload()}}
 </script>
-</body>
-</html>
+</body></html>
