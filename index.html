@@ -1,59 +1,104 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>FF ARENA BD</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FF ARENA BD - ZVY Tournament</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Inter:wght@600;800&display=swap" rel="stylesheet">
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
-body{background:#070d1c;color:#fff}
-.header{background:#101c34;padding:14px;display:flex;justify-content:space-between}
-.logo{color:#00e5ff;font-weight:800}
-.main{max-width:480px;margin:auto;padding:16px;padding-bottom:90px}
-.wallet{background:linear-gradient(135deg,#13244a,#1e3a7a);border-radius:20px;padding:20px;border:1px solid #21365e}
-.bal{font-size:42px;font-weight:800;color:#00e5ff}
-.btns{display:flex;gap:10px;margin-top:14px}.btn{flex:1;padding:14px;border-radius:14px;border:none;font-weight:800}
-.dep{background:#00c853;color:#fff}.with{background:#fff;color:#000}
-.card{background:#111e38;border:1px solid #21365e;border-radius:18px;padding:16px;margin:14px 0}
-.join{width:100%;background:#2a5bff;color:#fff;border:none;padding:13px;border-radius:12px;font-weight:800;margin-top:10px}
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:9998;display:none;justify-content:center;align-items:center;padding:16px}
-.modalBox{background:#101e38;border-radius:20px;padding:20px;width:100%;max-width:400px;border:1px solid #2a4a7a}
-.modalBox input{width:100%;padding:12px;border-radius:10px;border:1px solid #2a4a7a;background:#0a1228;color:#fff;margin:6px 0}
-.bkash{background:#e2136e;padding:12px;border-radius:12px;text-align:center;font-weight:800;margin:10px 0}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Inter',sans-serif}
+body{background:#02050f;color:#fff}
+.header{position:sticky;top:0;z-index:99;background:rgba(0,0,0,0.9);border-bottom:2px solid #ff0040;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+.logo{font-family:'Orbitron';font-weight:900;color:#fff;letter-spacing:1px}
+.logo span{color:#00e5ff}
+.live{background:#ff0040;padding:4px 10px;border-radius:6px;font-size:10px;font-weight:900;animation:blink 1s infinite}
+@keyframes blink{50%{opacity:0.5}}
+.banner{position:relative;background:#000;overflow:hidden}
+.banner img{width:100%;display:block}
+.main{max-width:500px;margin:auto;padding:14px;padding-bottom:100px}
+.info-box{background:linear-gradient(135deg,#0f172a,#1e293b);border:1px solid #1e3a5f;border-left:4px solid #ff0040;border-radius:12px;padding:14px;margin:14px 0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;text-align:center}
+.info-box b{color:#00e5ff;font-family:Orbitron;font-size:14px;display:block}
+.info-box small{color:#8aa0c5;font-size:10px}
+.card{background:linear-gradient(135deg,#111a2f 0%, #162040 100%);border:1px solid #22345a;border-radius:16px;padding:16px;margin:14px 0;position:relative}
+.card-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.mode{background:#ff0040;color:#fff;font-size:10px;padding:4px 8px;border-radius:4px;font-weight:900}
+.prize{color:#00ff88;font-weight:900;font-size:14px}
+.join{width:100%;background:linear-gradient(90deg,#ff0040,#ff2a6d);color:#fff;border:none;padding:14px;border-radius:12px;font-weight:900;letter-spacing:1px;margin-top:10px;box-shadow:0 0 20px rgba(255,0,64,0.5)}
+.join2{background:linear-gradient(90deg,#00e5ff,#2a5bff)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:9999;display:none;justify-content:center;align-items:center;padding:16px}
+.modalBox{background:#0f172a;border:1px solid #ff0040;border-radius:16px;padding:20px;width:100%;max-width:400px}
+.modalBox input{width:100%;padding:12px;border-radius:8px;border:1px solid #2a3a5a;background:#02050f;color:#fff;margin:6px 0}
+.bkash{background:linear-gradient(90deg,#e2136e,#ff0040);padding:12px;border-radius:10px;text-align:center;font-weight:900;margin:10px 0}
 </style>
 </head>
 <body>
-<div class="header"><div class="logo">FF ARENA</div><div style="font-size:12px;color:#7ea0c8">BD Tournament</div></div>
+<div class="header"><div class="logo">FF ARENA <span>BD</span> <small style="font-size:9px;color:#ff0040">ZVY TOUR</small></div><div class="live">● LIVE</div></div>
+
+<div class="banner">
+<div style="background:linear-gradient(135deg,#000 0%,#1a0a1a 50%,#0a0f2a 100%);padding:24px 16px;text-align:center;border-bottom:2px solid #ff0040">
+<div style="font-family:Orbitron;font-size:10px;color:#00e5ff;letter-spacing:4px">ZVY ESPORTS PRESENTS</div>
+<div style="font-family:Orbitron;font-size:38px;font-weight:900;line-height:0.9;margin:10px 0;text-shadow:0 0 20px #ff0040">FF ARENA BD</div>
+<div style="color:#ff0040;font-family:Orbitron;letter-spacing:6px;font-size:14px">ZVY TOURNAMENT</div>
+<div style="color:#00e5ff;font-family:Orbitron;font-size:20px;margin-top:10px">BATTLE ROYALE</div>
+<div style="background:#111a2f;border:1px solid #ff0040;border-radius:8px;padding:10px;margin:14px 0;display:flex;justify-content:space-around">
+<div><small style="color:#8aa0c5">PRIZE POOL</small><br><b style="color:#ff2a6d">50,000 BDT</b></div>
+<div><small style="color:#8aa0c5">DATE</small><br><b style="color:#00e5ff">DAILY 8 PM</b></div>
+<div><small style="color:#8aa0c5">MODE</small><br><b style="color:#fff">SOLO DUO SQUAD</b></div>
+</div>
+<div style="font-size:11px;color:#5a7ab0">SOLO • DUO • SQUAD • BOOYAH!</div>
+</div>
+</div>
+
 <div class="main">
-<div class="wallet">
-<div style="color:#8aa0c5">Welcome, Player</div>
-<div class="bal">৳ 0.00</div>
-<div style="color:#00e5ff;font-size:12px;margin-top:4px">✅ Secure Wallet • bKash Payment</div>
-<div class="btns"><button class="btn dep">+ Deposit</button><button class="btn with">Withdraw</button></div>
+<div class="info-box">
+<div><b>2.5K+</b><small>PLAYERS</small></div>
+<div><b>50K</b><small>PRIZE POOL</small></div>
+<div><b>LIVE</b><small>ON FB</small></div>
 </div>
-<h3 style="margin:18px 0 8px">🔥 Tournaments</h3>
+
+<h3 style="font-family:Orbitron;color:#ff2a6d;margin-top:16px;font-size:14px">🔥 ZVY TOUR LOBBY</h3>
 <div id="list"></div>
+
+<div style="background:#0a1120;border:1px dashed #22345a;border-radius:12px;padding:12px;margin-top:20px;text-align:center">
+<div style="font-size:11px;color:#5a7ab0">TOURNAMENT RULES</div>
+<div style="font-size:11px;color:#8aa0c5;margin-top:6px;line-height:1.6">✓ BR Ranked Mode Only<br>✓ Emulator Not Allowed<br>✓ 10 Min Late = Disqualify<br>✓ bKash Payment Must</div>
 </div>
+</div>
+
 <div class="modal" id="jModal">
 <div class="modalBox">
-<h3 id="mTitle">Join</h3>
-<div class="bkash">bKash Personal: 01344758887<br><small>এই নাম্বারে Send Money করুন</small></div>
+<h3 id="mTitle" style="font-family:Orbitron">JOIN TOUR</h3>
+<div class="bkash">bKash Personal<br><span style="font-size:22px">01344758887</span><br><small>Send Money করুন</small></div>
 <input id="ffName" placeholder="Free Fire Name">
 <input id="ffUid" placeholder="Free Fire UID">
-<input id="senderNum" placeholder="যে নাম্বার থেকে টাকা পাঠিয়েছেন">
-<input id="trxId" placeholder="bKash TrxID লিখুন">
-<button class="join" onclick="submitJoin()">SUBMIT REQUEST</button>
-<button onclick="closeM()" style="width:100%;margin-top:8px;background:#1a2a4a;color:#fff;padding:10px;border:none;border-radius:10px">Cancel</button>
-<p style="font-size:11px;color:#7a9abf;margin-top:10px;text-align:center">TrxID ভুল দিলে Join বাতিল হবে। Admin 5 মিনিটে Approve করবে।</p>
+<input id="senderNum" placeholder="bKash Sender Number">
+<input id="trxId" placeholder="bKash TrxID">
+<button class="join" onclick="submitJoin()">CONFIRM JOIN</button>
+<button onclick="closeM()" style="width:100%;margin-top:8px;background:#1a233a;color:#fff;padding:10px;border:none;border-radius:8px">Cancel</button>
 </div>
 </div>
+
 <script>
-let currentRoom=null;
-let rooms=[{title:"Solo Battle",entry:"50",prize:"5,000",time:"Today 8PM",type:"Solo"},{title:"Duo Battle",entry:"100",prize:"10,000",time:"Today 9:30PM",type:"Duo"}];
-function render(){document.getElementById('list').innerHTML=rooms.map(x=>`<div class="card"><b>${x.title}</b> <small style="color:#00e5ff">(${x.type})</small><div style="color:#7a9abf;font-size:13px;margin:6px 0">Entry ${x.entry} TK • Prize ${x.prize} TK<br>⏰ ${x.time}</div><button class="join" onclick="openM('${x.title}')">Join Now</button></div>`).join('')}
-function openM(t){currentRoom=t;document.getElementById('mTitle').innerText=t;document.getElementById('jModal').style.display='flex'}
+let cur=null;
+let rooms=[
+{title:"ZVY SOLO - Daily",entry:"50",prize:"5,000",time:"Today 8:00 PM",type:"SOLO",slot:"48/48",map:"Bermuda"},
+{title:"ZVY DUO - Daily",entry:"100",prize:"10,000",time:"Today 9:30 PM",type:"DUO",slot:"24/25",map:"Purgatory"},
+{title:"ZVY SQUAD - Grand Final",entry:"200",prize:"25,000",time:"Tomorrow 8PM",type:"SQUAD",slot:"12/12",map:"Bermuda Remastered"},
+{title:"ZVY 1VS1 - TDM",entry:"30",prize:"3,000",time:"Today 7PM",type:"1VS1",slot:"20/32",map:"Warehouse"}
+];
+function render(){
+document.getElementById('list').innerHTML=rooms.map(r=>`
+<div class="card">
+<div class="card-top"><span class="mode">${r.type}</span><span style="font-size:11px;color:#8aa0c5">🗺️ ${r.map} • 👥 ${r.slot}</span></div>
+<div style="display:flex;justify-content:space-between;align-items:center">
+<div><b style="font-size:16px">${r.title}</b><div style="font-size:12px;color:#5a7ab0;margin-top:2px">⏰ ${r.time}</div></div>
+<div class="prize">৳${r.prize}</div>
+</div>
+<button class="join ${r.type=='DUO'?'join2':''}" onclick="openM('${r.title}')">JOIN NOW - ${r.entry} TK</button>
+</div>`).join('');
+}
+function openM(t){cur=t;document.getElementById('mTitle').innerText=t;document.getElementById('jModal').style.display='flex'}
 function closeM(){document.getElementById('jModal').style.display='none'}
-function submitJoin(){if(!ffName.value||!trxId.value){alert('Name & TrxID দিন');return}alert('✅ Request Sent! bKash TrxID: '+trxId.value+' - Admin চেক করবে।');closeM()}
+function submitJoin(){if(!ffName.value||!trxId.value){alert('Name & TrxID দিন ভাই');return}alert('✅ ZVY Tour Join Request Sent!\nTrxID: '+trxId.value+'\nAdmin Approve করবে');closeM()}
 render();
 </script>
 </body>
