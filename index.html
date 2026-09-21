@@ -1,74 +1,763 @@
-<!DOCTYPE html>
-<html lang="bn">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ai E-Sports - Official</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:sans-serif}
-body{background:#080808;color:white}
-.header{background:#111;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #39FF14;position:sticky;top:0;z-index:10}
-.logo{font-size:22px;font-weight:900;color:#39FF14}.logo span{color:#FFEB00}
-.wallet{background:#FFEB00;color:black;padding:6px 16px;border-radius:20px;font-weight:900}
-.container{padding:15px;max-width:480px;margin:auto}
-.banner{background:linear-gradient(135deg,#39FF14,#FFEB00);color:black;padding:18px;border-radius:12px;text-align:center;font-weight:900;margin-bottom:15px}
-.card{background:#1A1A1A;border:1px solid #2a2a2a;border-radius:15px;padding:15px;margin-bottom:15px}
-.btn{width:100%;background:#39FF14;color:black;border:none;padding:13px;border-radius:10px;font-weight:800;font-size:16px;margin-top:8px}
-.bkashBox{background:#111;border:1px dashed #E2136E;padding:12px;border-radius:12px;text-align:center}
-.bkashNum{font-size:22px;font-weight:900;color:#FFEB00;letter-spacing:1px;margin:5px 0}
-input{width:100%;padding:13px;border-radius:10px;border:none;background:#222;color:white;margin:6px 0}
-.note{font-size:12px;color:#aaa;text-align:center;margin-top:8px}
-</style>
-</head>
-<body>
-<div class="header">
-  <div class="logo">Ai <span>E-SPORTS</span></div>
-  <div class="wallet">৳ 0</div>
-</div>
-<div class="container">
-  <div class="banner">🔥 Ai E-SPORTS TRUSTED TOURNAMENT 🔥</div>
+Build a complete, modern, professional tournament platform website named TournaX.
 
-  <div class="card">
-    <h3>💰 Deposit System</h3>
-    <div class="bkashBox">
-      <div style="color:#E2136E;font-weight:800">bKash Personal - Send Money</div>
-      <div class="bkashNum">01344758887</div>
-      <div style="font-size:13px">এই নাম্বারে Send Money করুন</div>
-    </div>
-    
-    <input id="amount" type="number" placeholder="কত টাকা পাঠিয়েছেন? ex: 100">
-    <input id="sender" type="text" placeholder="যে নাম্বার থেকে পাঠিয়েছেন">
-    <input id="trxid" type="text" placeholder="bKash TrxID (ex: 9A7F5H2K1L)">
-    <button class="btn" onclick="submitDeposit()">SUBMIT DEPOSIT - TrxID Check</button>
-    <p class="note">TrxID ভুল দিলে টাকা যোগ হবে না। bKash App এর History তে TrxID পাবেন।</p>
-    <p id="msg" style="text-align:center;margin-top:10px;color:#39FF14;font-weight:bold"></p>
-  </div>
+IMPORTANT:
 
-  <div class="card">
-    <h3>🎮 Free Fire Solo - 9 PM</h3>
-    <p style="color:#aaa;font-size:14px;margin:6px 0">Entry: 50 TK | Win: 1000 TK</p>
-    <button class="btn">JOIN NOW</button>
-  </div>
-</div>
+- This is a USER-FACING tournament website, NOT an admin panel.
+- Do NOT create an Admin Dashboard in this version.
+- The architecture must be Firebase-ready so an admin system can be connected later through Firebase Console/backend.
+- Build the website as a real functional web application, not just a static UI mockup.
+- Every important button, card, navigation item and action should work and lead to the appropriate page, modal, drawer or detailed view.
+- Do not leave major buttons as "Coming Soon".
+- Use realistic sample tournament data for demonstration.
+- Keep the entire UI professional, clean and trustworthy.
 
-<script>
-function submitDeposit(){
-  let amt = document.getElementById('amount').value;
-  let sender = document.getElementById('sender').value;
-  let trx = document.getElementById('trxid').value;
-  if(amt=="" || sender=="" || trx==""){ alert("সব ঘর পূরণ করুন!"); return; }
-  
-  // Local system - Admin panel এ দেখা যাবে
-  let data = {amount:amt, sender:sender, trxid:trx, number:"01344758887", time: new Date().toLocaleString()};
-  let all = JSON.parse(localStorage.getItem("deposits") || "[]");
-  all.push(data);
-  localStorage.setItem("deposits", JSON.stringify(all));
-  
-  document.getElementById('msg').innerText = "✅ Deposit Request পাঠানো হয়েছে! TrxID: "+trx+" - 5 মিনিটের মধ্যে চেক করা হবে";
-  document.getElementById('amount').value="";
-  document.getElementById('sender').value="";
-  document.getElementById('trxid').value="";
-}
-</script>
-</body>
-</html>
+==================================================
+
+1. BRAND
+   ==================================================
+
+Website Name:
+TournaX
+
+Tagline:
+Compete. Play. Win.
+
+Create a professional gaming/tournament brand identity around TournaX.
+
+Use a predominantly WHITE interface with a modern professional visual system.
+
+Design direction:
+
+- White background
+- Clean cards
+- Subtle borders
+- Soft shadows
+- Professional typography
+- Modern spacing
+- Minimal but attractive accent colors
+- Rounded corners
+- High-quality icons
+- Excellent mobile experience
+- Responsive desktop/tablet/mobile layouts
+
+Do NOT make the design overly colorful, childish or cluttered.
+
+==================================================
+2. TECHNOLOGY
+
+Build the project using a modern web stack suitable for Google AI Studio.
+
+Preferred:
+
+- React
+- TypeScript
+- Modern CSS / Tailwind CSS
+- Component-based architecture
+- React Router or equivalent routing
+- Firebase-ready architecture
+
+Structure the project cleanly so Firebase Authentication, Firestore, Storage and other Firebase services can be connected later.
+
+Create reusable components instead of putting everything into one huge file.
+
+==================================================
+3. MAIN NAVIGATION
+
+The primary user navigation must contain exactly these major sections:
+
+1. Home
+2. Tournaments
+3. My Orders
+4. Wallet
+5. Profile
+
+On mobile, use a professional bottom navigation bar.
+
+On desktop, use a professional top navigation/header or suitable responsive navigation.
+
+The active navigation item must have a clear visual state.
+
+==================================================
+4. HOME PAGE
+
+Create a premium TournaX homepage.
+
+Include:
+
+- TournaX logo/brand
+- Welcome message
+- User profile shortcut
+- Notification icon
+- Search option
+- Featured tournament section
+- Upcoming tournaments
+- Live tournaments
+- Popular tournaments
+- Recently added tournaments
+- Tournament categories
+- Quick wallet balance card
+- Quick actions
+- Promotional banner
+- View All buttons
+
+Example categories:
+
+- Free Fire
+- PUBG Mobile
+- BGMI
+- eFootball
+- Mobile Legends
+- Call of Duty Mobile
+- Valorant
+- Clash Royale
+- Other Games
+
+Every tournament card should contain:
+
+- Game icon/image
+- Tournament name
+- Entry fee
+- Prize pool
+- Number of slots
+- Joined players/teams
+- Date
+- Start time
+- Tournament status
+- Join/View button
+
+Clicking a tournament card must open its dedicated Tournament Details page.
+
+==================================================
+5. ALL TOURNAMENTS PAGE
+
+Create a dedicated "/tournaments" page.
+
+The page must allow users to browse all available tournaments.
+
+Include:
+
+- Search tournaments
+- Game/category filter
+- Status filter
+- Entry fee filter
+- Sort options
+- Upcoming
+- Live
+- Completed
+- Free tournaments
+- Paid tournaments
+
+Create professional tournament cards.
+
+Clicking any tournament opens:
+
+"/tournaments/:id"
+
+Do not simply open a popup. Create a proper detailed page.
+
+==================================================
+6. TOURNAMENT DETAILS PAGE
+
+Create a complete tournament details page.
+
+Include:
+
+- Tournament banner
+- Game name
+- Tournament title
+- Organizer/platform name: TournaX
+- Prize pool
+- Entry fee
+- Total slots
+- Filled slots
+- Remaining slots
+- Date
+- Start time
+- Registration deadline
+- Tournament status
+- Rules
+- Match format
+- Map/mode
+- Team size
+- Prize distribution
+- Important instructions
+- Terms and conditions
+- Participants section
+- Tournament information
+- Join Tournament button
+
+The Join Tournament button should have a proper confirmation flow.
+
+If the user has insufficient wallet balance, show a professional insufficient-balance message and provide a "Deposit Now" action.
+
+If the user has enough balance, show a confirmation screen before joining.
+
+After successful joining:
+
+- Create an order/registration record
+- Deduct the required entry fee from the wallet balance
+- Show confirmation
+- Add the tournament to My Orders
+- Show the user their tournament/registration information
+
+Use safe transaction-style logic in the data layer so wallet deductions and order creation can later be implemented atomically with Firebase.
+
+==================================================
+7. MY ORDERS PAGE
+
+Create "/orders".
+
+This section means the user's tournament registrations/orders.
+
+Show:
+
+- All orders
+- Active
+- Upcoming
+- Completed
+- Cancelled
+
+Each order should show:
+
+- Order ID
+- Tournament name
+- Game
+- Entry fee
+- Date
+- Status
+- Registration date
+- Tournament status
+- View Details button
+
+Clicking an order opens:
+
+"/orders/:id"
+
+Create a complete Order Details page.
+
+Show:
+
+- Order ID
+- Tournament information
+- Payment amount
+- Payment status
+- Registration status
+- Date/time
+- Tournament start time
+- Relevant instructions
+
+==================================================
+8. WALLET
+
+Create a professional "/wallet" page.
+
+Display:
+
+- Current balance
+- Available balance
+- Transaction history
+- Deposit button
+- Withdraw button
+
+Transaction history should include:
+
+- Deposit
+- Tournament entry
+- Prize/winning credit
+- Withdrawal
+- Refund
+- Other adjustments
+
+Each transaction should have:
+
+- Transaction ID
+- Amount
+- Type
+- Date/time
+- Status
+
+==================================================
+9. DEPOSIT PAGE
+
+Create a dedicated Deposit page.
+
+Allow the user to:
+
+- Select payment method
+- Enter amount
+- See minimum/maximum limits
+- Review deposit
+- Confirm deposit
+
+Create payment method cards with placeholders for future Firebase/backend integration.
+
+Potential methods:
+
+- bKash
+- Nagad
+- Rocket
+- Other supported methods
+
+IMPORTANT:
+Do not pretend that a real payment has happened.
+
+For the frontend demo, clearly separate:
+
+- Pending
+- Successful
+- Failed
+
+The payment integration must be structured so real payment gateway/API integration can be added later.
+
+==================================================
+10. WITHDRAW PAGE
+
+Create a dedicated Withdraw page.
+
+Include:
+
+- Available balance
+- Withdrawal amount
+- Withdrawal method
+- Account number/input
+- Review withdrawal
+- Confirmation
+
+Include validation:
+
+- Minimum withdrawal amount
+- Maximum withdrawal amount
+- Cannot withdraw more than available balance
+- Required account information
+- Confirmation before submission
+
+Show withdrawal status as:
+
+- Pending
+- Processing
+- Completed
+- Rejected
+
+Do not claim a real withdrawal occurred unless a real backend/payment integration confirms it.
+
+==================================================
+11. PROFILE PAGE
+
+Create a premium "/profile" page.
+
+Include:
+
+- Profile avatar
+- Username
+- User ID
+- Email/phone
+- Wallet balance
+- Total tournaments joined
+- Completed tournaments
+- Wins
+- Total winnings
+- Account status
+
+Add profile sections:
+
+- Edit Profile
+- My Orders
+- Wallet
+- Transaction History
+- Notifications
+- Settings
+- Help & Support
+- Terms & Conditions
+- Privacy Policy
+- Logout
+
+Every section should open its own page where appropriate.
+
+==================================================
+12. EDIT PROFILE
+
+Create "/profile/edit".
+
+Allow:
+
+- Profile image
+- Full name
+- Username
+- Email
+- Phone number
+
+Add:
+
+- Save Changes
+- Cancel
+
+Use proper form validation.
+
+==================================================
+13. SETTINGS
+
+Create a professional "/settings" page.
+
+Include:
+
+- Account Settings
+- Notification Settings
+- Security
+- Language
+- Appearance
+- Privacy
+- Help & Support
+- Terms
+- Privacy Policy
+- Logout
+
+Each setting should open its own dedicated page or appropriate interface.
+
+==================================================
+14. NOTIFICATIONS
+
+Create "/notifications".
+
+Include notification cards for:
+
+- Tournament registration
+- Tournament starting soon
+- Tournament result
+- Wallet transaction
+- Deposit status
+- Withdrawal status
+- Promotional notifications
+
+Support:
+
+- Read/unread state
+- Mark as read
+- Mark all as read
+
+==================================================
+15. SEARCH
+
+Create a global tournament search interface.
+
+Search by:
+
+- Tournament name
+- Game
+- Category
+
+Show live filtered results.
+
+Include a professional empty state when no results exist.
+
+==================================================
+16. AUTHENTICATION
+
+Create user authentication screens:
+
+- Login
+- Sign Up
+- Forgot Password
+- Reset Password
+- Logout
+
+Structure authentication so Firebase Authentication can be connected.
+
+Support a clean authentication flow.
+
+Do not hard-code real credentials.
+
+==================================================
+17. FIREBASE-READY DATA ARCHITECTURE
+
+Prepare the application for Firebase.
+
+Suggested collections:
+
+users
+tournaments
+orders
+wallets
+transactions
+notifications
+withdrawals
+deposits
+categories
+
+Suggested user document:
+
+users/{userId}
+
+Fields:
+
+- uid
+- name
+- username
+- email
+- phone
+- photoURL
+- createdAt
+- updatedAt
+- status
+
+Tournament document:
+
+tournaments/{tournamentId}
+
+Fields:
+
+- title
+- game
+- category
+- banner
+- description
+- entryFee
+- prizePool
+- totalSlots
+- joinedSlots
+- startDate
+- startTime
+- registrationDeadline
+- status
+- rules
+- format
+- teamSize
+- createdAt
+
+Order document:
+
+orders/{orderId}
+
+Fields:
+
+- userId
+- tournamentId
+- tournamentName
+- amount
+- status
+- createdAt
+
+Transaction document:
+
+transactions/{transactionId}
+
+Fields:
+
+- userId
+- type
+- amount
+- status
+- referenceId
+- createdAt
+- description
+
+Design the code so Firebase can replace demo/mock data without rebuilding the UI.
+
+==================================================
+18. ADMIN ARCHITECTURE
+
+DO NOT create or expose an admin panel now.
+
+However, prepare the application architecture for future role-based access.
+
+Example future field:
+
+users/{uid}/role
+
+Possible future values:
+
+user
+admin
+
+Normal users must never see admin functionality.
+
+The current version must contain ONLY the user-facing TournaX experience.
+
+==================================================
+19. SECURITY
+
+Do not place Firebase Admin SDK credentials or private secrets in frontend code.
+
+Do not expose secret API keys.
+
+Design the frontend assuming sensitive operations will eventually be handled securely through Firebase backend services / Cloud Functions or another secure backend.
+
+Wallet balance, payment confirmation, tournament joining and withdrawals must NOT rely solely on client-side trust.
+
+==================================================
+20. RESPONSIVE DESIGN
+
+The website must be fully responsive.
+
+Mobile:
+
+- Bottom navigation
+- Compact cards
+- Touch-friendly buttons
+- Mobile-first layouts
+
+Tablet:
+
+- Adaptive grid
+
+Desktop:
+
+- Larger content area
+- Professional navigation
+- Multi-column tournament grids
+
+Make sure there is no horizontal overflow.
+
+==================================================
+21. UI COMPONENTS
+
+Create reusable components:
+
+- Header
+- BottomNavigation
+- TournamentCard
+- TournamentGrid
+- CategoryCard
+- WalletCard
+- TransactionItem
+- OrderCard
+- ProfileCard
+- NotificationItem
+- SearchBar
+- FilterPanel
+- Modal
+- ConfirmationDialog
+- LoadingState
+- EmptyState
+- ErrorState
+- Toast/Alert
+- Button
+- Input
+- Select
+- Tabs
+
+==================================================
+22. LOADING / EMPTY / ERROR STATES
+
+Every data-driven page should have:
+
+- Loading state
+- Empty state
+- Error state
+- Retry action
+
+Do not leave blank white screens.
+
+==================================================
+23. SAMPLE DATA
+
+Include realistic demo tournaments so the website looks complete immediately.
+
+Use fictional/sample tournament data.
+
+Do not use real payment confirmations.
+
+Example:
+
+TournaX Weekly Clash
+Game: Free Fire
+Entry: ৳20
+Prize Pool: ৳2,000
+
+TournaX Battle Royale
+Game: PUBG Mobile
+Entry: ৳50
+Prize Pool: ৳5,000
+
+TournaX Pro League
+Game: eFootball
+Entry: ৳100
+Prize Pool: ৳10,000
+
+Add enough sample data to demonstrate filters, search and different statuses.
+
+==================================================
+24. ROUTES
+
+Create routes similar to:
+
+/
+/tournaments
+/tournaments/:id
+/orders
+/orders/:id
+/wallet
+/wallet/deposit
+/wallet/withdraw
+/transactions
+/profile
+/profile/edit
+/settings
+/settings/notifications
+/settings/security
+/settings/language
+/notifications
+/search
+/login
+/register
+/forgot-password
+/help
+/terms
+/privacy
+
+All routes must have a consistent TournaX design.
+
+==================================================
+25. UX REQUIREMENTS
+
+The website should feel like a real production-quality tournament platform.
+
+Use:
+
+- Smooth transitions
+- Hover states
+- Active states
+- Button feedback
+- Form validation
+- Toast notifications
+- Confirmation dialogs
+- Skeleton loaders
+- Professional empty states
+- Accessible labels
+- Keyboard-friendly controls
+- Good contrast
+- Semantic HTML
+
+Do not overuse animations.
+
+==================================================
+26. FINAL QUALITY REQUIREMENTS
+
+Before finishing:
+
+1. Check every route.
+2. Check every navigation item.
+3. Check every major button.
+4. Check tournament search.
+5. Check tournament filters.
+6. Check tournament details.
+7. Check Join Tournament flow.
+8. Check wallet UI.
+9. Check deposit flow.
+10. Check withdrawal flow.
+11. Check My Orders.
+12. Check Profile.
+13. Check Settings.
+14. Check authentication screens.
+15. Check responsive mobile layout.
+16. Check desktop layout.
+17. Check loading states.
+18. Check empty states.
+19. Check error states.
+20. Remove broken links and placeholder buttons.
+
+IMPORTANT:
+If a backend feature cannot actually be implemented without Firebase credentials or external APIs, build the complete frontend flow and clearly isolate the integration point rather than pretending the operation succeeded.
+
+The final result should look like a polished, trustworthy, production-ready tournament platform called TournaX, with a clean white professional interface and a strong focus on usability.
+
+Start by generating the complete project structure and all required frontend pages/components. Then implement the navigation and user flows described above.
