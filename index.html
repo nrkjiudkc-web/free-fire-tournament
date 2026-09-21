@@ -1,108 +1,90 @@
-
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TournaX - Real Esports Platform</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TournaX - Compete. Play. Win.</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<style>*{font-family:'Inter',sans-serif}.card{transition:.2s}.card:hover{transform:translateY(-3px);box-shadow:0 15px 35px rgba(0,0,0,.08)}.no-scrollbar::-webkit-scrollbar{display:none}</style>
 </head>
-<body class="bg-[#050507] text-white">
-<div id="app" class="min-h-screen flex items-center justify-center">Loading Real TournaX...</div>
-<script>
-// ==== 1. তোমার FIREBASE CONFIG এখানে বসাও ====
+<body class="bg-[#fcfcfc] text-zinc-900 antialiased">
+<div id="app"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY",
-  authDomain: "PASTE_YOUR_AUTH_DOMAIN",
-  projectId: "PASTE_YOUR_PROJECT_ID",
-  storageBucket: "PASTE_YOUR_BUCKET",
-  messagingSenderId: "PASTE",
-  appId: "PASTE"
+  apiKey: "AIzaSyAGN8AjxBKEx9Wm_7asQOYmiO2BUX3IvD8",
+  authDomain: "tournax-bd.firebaseapp.com",
+  projectId: "tournax-bd",
+  storageBucket: "tournax-bd.firebasestorage.app",
+  messagingSenderId: "955192496522",
+  appId: "1:955192496522:web:1d5c1c39d8a951b7fa7873"
 };
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
 
-const TOURNAMENTS = [
- {id:"ff1",title:"WEEKLY CLASH",game:"Free Fire",entry:20,prize:2000,slots:"68/100",date:"TODAY 9PM",status:"upcoming"},
- {id:"ff2",title:"PRO BATTLE",game:"Free Fire",entry:50,prize:5000,slots:"42/48",date:"TOMORROW 8:30PM",status:"hot"},
- {id:"pb1",title:"BATTLE ROYALE",game:"PUBG Mobile",entry:50,prize:5000,slots:"92/100",date:"LIVE NOW",status:"live"},
- {id:"bg1",title:"BGMI DOMINATION",game:"BGMI",entry:30,prize:3000,slots:"25/64",date:"24 SEP",status:"upcoming"},
-];
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-let currentUser=null, userData=null;
-auth.onAuthStateChanged(async (u)=>{
-  currentUser=u;
-  if(u){
-    const doc = await db.collection('users').doc(u.uid).get();
-    if(!doc.exists){
-      await db.collection('users').doc(u.uid).set({email:u.email,balance:850,name:u.email.split('@')[0],created:Date.now()});
-    }
-    const fresh = await db.collection('users').doc(u.uid).get();
-    userData=fresh.data();
-  }
-  render();
+// Auto Anonymous Login - Error Fix
+signInAnonymously(auth).catch((e)=>{console.log("Auth error",e)});
+
+onAuthStateChanged(auth, (user)=>{
+  if(user){ console.log("Firebase Connected:", user.uid); }
 });
 
-function nav(h){location.hash=h;render();}
-async function joinTournament(id){
- const t=TOURNAMENTS.find(x=>x.id==id);
- if(userData.balance < t.entry){alert('Balance কম! bKash 01344758887 তে Deposit করো');nav('#/wallet');return;}
- await db.collection('users').doc(currentUser.uid).update({balance: firebase.firestore.FieldValue.increment(-t.entry)});
- await db.collection('orders').add({uid:currentUser.uid,tid:id,title:t.title,entry:t.entry,created:Date.now()});
- await db.collection('transactions').add({uid:currentUser.uid,type:'entry',amount:t.entry,title:t.title,created:Date.now()});
- alert('JOINED! My Orders এ যাও');
- nav('#/orders');
-}
-
+</script>
+<script>
+const CATS=["All","Free Fire","PUBG Mobile","BGMI","eFootball","Clash Royale","Valorant","CODM"];
+const TOURNAMENTS=[
+{id:"ff1",title:"TournaX Weekly Clash",game:"Free Fire",cat:"Free Fire",entry:20,prize:2000,total:100,joined:68,date:"22 Sep",time:"9:00 PM",status:"upcoming",banner:"🔥",mode:"Solo",map:"Bermuda",rules:"No hack, No teaming. Top 3 prize. Room ID 15 min before match in My Orders."},
+{id:"ff2",title:"TournaX Pro Battle",game:"Free Fire",cat:"Free Fire",entry:50,prize:5000,total:48,joined:42,date:"23 Sep",time:"8:30 PM",status:"upcoming",banner:"💎",mode:"Squad",map:"Bermuda",rules:"Squad only. 4 players. No emulator."},
+{id:"pb1",title:"TournaX Battle Royale",game:"PUBG Mobile",cat:"PUBG Mobile",entry:50,prize:5000,total:100,joined:92,date:"21 Sep",time:"8:00 PM",status:"live",banner:"🎯",mode:"Squad",map:"Erangel",rules:"Erangel TPP. No hack."},
+{id:"bg1",title:"BGMI Domination",game:"BGMI",cat:"BGMI",entry:30,prize:3000,total:100,joined:55,date:"24 Sep",time:"7:00 PM",status:"upcoming",banner:"⚔️",mode:"Solo",map:"Erangel",rules:"Solo classic."},
+{id:"ef1",title:"TournaX Pro League",game:"eFootball",cat:"eFootball",entry:100,prize:10000,total:32,joined:14,date:"23 Sep",time:"7:30 PM",status:"upcoming",banner:"⚽",mode:"1v1",map:"Stadium",rules:"6 min match, No extra time."},
+{id:"cr1",title:"Clash Kings Cup",game:"Clash Royale",cat:"Clash Royale",entry:0,prize:1500,total:128,joined:110,date:"21 Sep",time:"Live",status:"live",banner:"👑",mode:"1v1",map:"Arena",rules:"Free entry. Best of 3."},
+];
+let DB={user:JSON.parse(localStorage.getItem('tx_user')||'null'),balance:Number(localStorage.getItem('tx_bal')||'850'),orders:JSON.parse(localStorage.getItem('tx_orders')||'[]'),trx:JSON.parse(localStorage.getItem('tx_trx')||'[]'),rooms:JSON.parse(localStorage.getItem('tx_rooms')||'{}')};
+function save(){localStorage.setItem('tx_user',JSON.stringify(DB.user));localStorage.setItem('tx_bal',DB.balance);localStorage.setItem('tx_orders',JSON.stringify(DB.orders));localStorage.setItem('tx_trx',JSON.stringify(DB.trx));localStorage.setItem('tx_rooms',JSON.stringify(DB.rooms));}
+let state={route:location.hash.slice(1)||'/',cat:"All",sel:null,admin:false};
+function nav(r){location.hash=r;state.route=r;render();window.scrollTo(0,0)}
+function TOUR_CARD(t){return `<div onclick="openT('${t.id}')" class="card bg-white border border-zinc-200/80 rounded-[18px] p-4 cursor-pointer"><div class="flex gap-3"><div class="w-12 h-12 rounded-[12px] bg-zinc-50 border flex items-center justify-center text-[22px]">${t.banner}</div><div class="flex-1 min-w-0"><div class="flex justify-between items-start gap-2"><b class="text-[14px] leading-[18px] truncate">${t.title}</b><span class="text-[10px] font-bold px-2.5 py-1 rounded-full uppercase ${t.status=='live'?'bg-red-500 text-white':'bg-zinc-900 text-white'}">${t.status}</span></div><p class="text-[12px] text-zinc-500 mt-0.5">${t.game} • ${t.mode} • ${t.date} ${t.time}</p><div class="flex gap-1.5 mt-2.5"><span class="text-[11px] px-3 py-1 rounded-full bg-zinc-50 border">৳${t.entry} Entry</span><span class="text-[11px] px-3 py-1 rounded-full bg-amber-50 border border-amber-200 text-amber-700 font-bold">৳${t.prize} Prize</span></div></div></div></div>`}
+window.openT=(id)=>{state.sel=TOURNAMENTS.find(x=>x.id==id);nav('/tournaments/'+id)}
+function checkAdmin(){const c=document.getElementById('acode').value;if(c==='AF-0134-ADMIN'){state.admin=true;render();}else alert('ভুল কোড!')}
 function render(){
- let hash=location.hash.replace('#','')||'/';
- if(!currentUser && hash!='/login' && hash!='/register' && hash!='/admin'){
-   hash='/login'; location.hash='#/login';
- }
- let html='';
- if(hash=='/login'){
-   html=`<div class="bg-[#111113] border border-zinc-800 rounded-[24px] p-8 w-[360px]"><h1 class="text-[26px] font-black">TournaX REAL LOGIN</h1><p class="text-[11px] text-zinc-500 mt-1">bKash: 01344758887</p><input id="em" placeholder="Email" class="w-full mt-6 bg-black border border-zinc-800 rounded-full px-4 py-3"><input id="ps" type="password" placeholder="Password" class="w-full mt-3 bg-black border border-zinc-800 rounded-full px-4 py-3"><button onclick="auth.signInWithEmailAndPassword(document.getElementById('em').value,document.getElementById('ps').value).catch(e=>alert(e.message))" class="w-full mt-4 bg-[#39FF14] text-black font-black py-3 rounded-full">LOGIN</button><button onclick="nav('#/register')" class="w-full mt-2 text-[12px] text-zinc-500">Create Account</button></div>`;
- }
- else if(hash=='/register'){
-   html=`<div class="bg-[#111113] border border-zinc-800 rounded-[24px] p-8 w-[360px]"><h1 class="text-[26px] font-black">CREATE REAL ACCOUNT</h1><input id="em" placeholder="Email" class="w-full mt-6 bg-black border border-zinc-800 rounded-full px-4 py-3"><input id="ps" type="password" placeholder="Password" class="w-full mt-3 bg-black border border-zinc-800 rounded-full px-4 py-3"><button onclick="auth.createUserWithEmailAndPassword(document.getElementById('em').value,document.getElementById('ps').value).catch(e=>alert(e.message))" class="w-full mt-4 bg-white text-black font-black py-3 rounded-full">SIGN UP</button></div>`;
- }
- else{
-   let header=`<header class="fixed top-0 left-0 right-0 bg-black border-b border-zinc-900 h-[60px] flex items-center justify-between px-4 z-20"><b>TournaX REAL</b><div class="flex gap-2"><span class="bg-zinc-900 px-3 py-1 rounded-full text-[12px]">৳${userData?userData.balance:0}</span><button onclick="auth.signOut()" class="text-[11px] border px-3 py-1 rounded-full">Logout</button></div></header><div class="h-[60px]"></div>`;
-   if(hash=='/'||hash==''){
-     html=header+`<div class="max-w-[1000px] mx-auto p-4"><div class="bg-zinc-900 rounded-[24px] p-6"><h1 class="text-[32px] font-black leading-none">COMPETE. PLAY.<br><span class="text-[#39FF14]">WIN REAL PRIZE.</span></h1><p class="text-[12px] text-zinc-400 mt-2">Real Database Connected • bKash 01344758887</p></div><div class="grid md:grid-cols-2 gap-3 mt-4">${TOURNAMENTS.map(t=>`<div class="bg-[#111113] border border-zinc-800 rounded-[18px] p-4"><div class="flex justify-between"><b class="text-[14px]">${t.title}</b><span class="text-[10px] px-2 py-1 rounded-full ${t.status=='live'?'bg-red-500':'bg-zinc-800'}">${t.status}</span></div><p class="text-[11px] text-zinc-500">${t.game} • ${t.date}</p><div class="flex justify-between mt-3"><span class="text-[12px]">Entry ৳${t.entry}</span><span class="bg-[#39FF14] text-black font-bold px-3 py-1 rounded-full text-[11px]">৳${t.prize}</span></div><button onclick="joinTournament('${t.id}')" class="w-full mt-3 bg-white text-black py-2 rounded-full font-bold text-[13px]">JOIN NOW - REAL</button></div>`).join('')}</div></div>`;
-   }
-   else if(hash=='/orders'){
-     html=header+`<div class="max-w-[600px] mx-auto p-4"><h1 class="font-black">My Orders (Real)</h1><div id="ordersList" class="mt-4">Loading...</div></div>`;
-     setTimeout(async()=>{
-       const snap=await db.collection('orders').where('uid','==',currentUser.uid).orderBy('created','desc').get();
-       let list=''; for(let d of snap.docs){let o=d.data(); let room=await db.collection('rooms').doc(o.tid).get(); let r=room.exists?room.data():null; list+=`<div class="bg-[#111113] border border-zinc-800 rounded-[14px] p-4 mb-2"><b class="text-[13px]">${o.title}</b>${r?`<div class="mt-2 bg-black text-[#39FF14] font-mono p-2 rounded">ID:${r.id} PASS:${r.pass} LIVE</div>`:''}</div>`;}
-       document.getElementById('ordersList').innerHTML=list||'No orders';
-       // Realtime room listener
-       db.collection('rooms').onSnapshot(s=>{ s.docs.forEach(doc=>{/* auto update handled by reload */}) });
-     },500);
-   }
-   else if(hash=='/wallet'){
-     html=header+`<div class="max-w-[500px] mx-auto p-4"><h1 class="font-black text-[20px]">Wallet ৳${userData.balance} REAL</h1><div class="mt-4 bg-pink-600/20 border border-pink-500/30 rounded-[16px] p-4"><div class="text-[11px]">bKash Personal Send Money</div><div class="text-[24px] font-black">01344758887</div></div><div class="grid grid-cols-2 gap-2 mt-4"><button onclick="nav('#/wallet/deposit')" class="bg-[#39FF14] text-black py-3 rounded-full font-black">DEPOSIT</button><button onclick="nav('#/wallet/withdraw')" class="border border-zinc-700 py-3 rounded-full">WITHDRAW</button></div></div>`;
-   }
-   else if(hash=='/wallet/deposit'){
-     html=header+`<div class="max-w-[500px] mx-auto p-4"><h1 class="font-black">Real Deposit</h1><div class="bg-[#111113] border border-zinc-800 rounded-[20px] p-5 mt-4"><p class="text-[12px] text-zinc-400">01344758887 তে টাকা পাঠিয়ে TrxID দাও, Admin Approve করলে Balance Add হবে</p><input id="da" type="number" placeholder="Amount" class="w-full mt-4 bg-black border border-zinc-800 rounded-[12px] px-4 py-3"><input id="dt" placeholder="bKash TrxID" class="w-full mt-3 bg-black border border-zinc-800 rounded-[12px] px-4 py-3"><button onclick="db.collection('deposits').add({uid:currentUser.uid,amount:Number(document.getElementById('da').value),trx:document.getElementById('dt').value,status:'pending',created:Date.now()});alert('Request Sent! Admin Approve করবে');nav('#/wallet')" class="w-full mt-4 bg-[#39FF14] text-black py-3 rounded-full font-black">SUBMIT REAL REQUEST</button></div></div>`;
-   }
-   else if(hash=='/admin'){
-     html=`<div class="p-4 max-w-[800px] mx-auto"><h1 class="font-black text-[#39FF14]">REAL ADMIN - 01344758887</h1><input id="ac" type="password" placeholder="Code AF-0134-ADMIN" class="w-full mt-4 bg-black border border-zinc-700 rounded-full px-4 py-3"><button onclick="if(document.getElementById('ac').value=='AF-0134-ADMIN'){document.getElementById('adminPanel').style.display='block'}" class="mt-2 bg-[#39FF14] text-black px-6 py-2 rounded-full font-bold">UNLOCK</button><div id="adminPanel" style="display:none" class="mt-6"><div class="bg-zinc-900 rounded-[16px] p-4"><h2 class="font-bold">Deposit Requests</h2><div id="depList">Loading...</div></div><div class="bg-zinc-900 rounded-[16px] p-4 mt-4"><h2 class="font-bold">Room LIVE</h2><input id="tid" placeholder="Tournament ID" class="w-full mt-2 bg-black border border-zinc-700 rounded px-3 py-2"><input id="rid" placeholder="Room ID" class="w-full mt-2 bg-black border border-zinc-700 rounded px-3 py-2"><input id="rp" placeholder="Password" class="w-full mt-2 bg-black border border-zinc-700 rounded px-3 py-2"><button onclick="db.collection('rooms').doc(document.getElementById('tid').value).set({id:document.getElementById('rid').value,pass:document.getElementById('rp').value,updated:Date.now()});alert('LIVE')" class="w-full mt-2 bg-[#39FF14] text-black py-2 rounded-full font-bold">MAKE LIVE</button></div></div></div>`;
-     setTimeout(async()=>{
-       const snap=await db.collection('deposits').where('status','==','pending').get();
-       let h=''; snap.forEach(d=>{let x=d.data(); h+=`<div class="bg-black p-3 rounded mt-2 flex justify-between"><div class="text-[12px]">${x.uid.slice(0,6)} - ৳${x.amount} - ${x.trx}</div><button onclick="db.collection('deposits').doc('${d.id}').update({status:'approved'});db.collection('users').doc('${x.uid}').update({balance: firebase.firestore.FieldValue.increment(${x.amount})});alert('Approved')" class="bg-[#39FF14] text-black px-3 py-1 rounded text-[11px]">APPROVE</button></div>`});
-       document.getElementById('depList').innerHTML=h||'No pending';
-     },800);
-   }
- }
- document.getElementById('app').innerHTML=html;
+const r=state.route;
+if(r==='/admin'||r.startsWith('/admin')){
+if(!state.admin){document.getElementById('app').innerHTML=`<div class="min-h-screen flex items-center justify-center p-4 bg-[#080808]"><div class="bg-[#161616] border border-zinc-800 rounded-[24px] p-8 w-full max-w-[380px] text-center"><div class="w-12 h-12 bg-[#39FF14] rounded-full mx-auto flex items-center justify-center font-black text-black text-[20px]">AF</div><h1 class="text-[22px] font-black text-white mt-4">AF ADMIN PANEL</h1><input id="acode" type="password" placeholder="Enter Admin Code" class="w-full mt-6 bg-zinc-900 border border-zinc-700 rounded-full px-5 py-3.5 outline-none text-center tracking-[6px] text-white"><button onclick="checkAdmin()" class="w-full mt-4 bg-[#39FF14] text-black font-black py-3.5 rounded-full">UNLOCK ADMIN</button><button onclick="nav('/')" class="mt-6 text-[12px] text-zinc-500">← Back</button></div></div>`;return;
+}else{
+const deps=DB.trx.filter(t=>t.type.includes('Deposit'));
+document.getElementById('app').innerHTML=`<div class="min-h-screen bg-[#080808] text-white"><div class="bg-[#111] border-b border-zinc-800 p-4 flex justify-between items-center sticky top-0 z-30"><div class="flex items-center gap-3"><div class="w-8 h-8 bg-[#39FF14] rounded-[8px] flex items-center justify-center font-black text-black">AF</div><div><b class="text-[#39FF14] tracking-wide">TournaX ADMIN</b><div class="text-[10px] text-zinc-500">bKash 01344758887</div></div></div><button onclick="state.admin=false;nav('/')" class="text-[12px] border border-zinc-700 px-4 py-1.5 rounded-full">Logout</button></div><div class="max-w-[1100px] mx-auto p-4 grid md:grid-cols-2 gap-4"><div class="bg-[#161616] border border-zinc-800 rounded-[22px] p-6"><h2 class="font-bold">🎮 Room Control</h2><input id="rtid" placeholder="Tournament ID ex: ff1" class="w-full mt-5 bg-zinc-900 border border-zinc-700 rounded-[12px] px-4 py-3 text-[13px]"><input id="roomId" placeholder="Room ID ex: 87654321" class="w-full mt-3 bg-zinc-900 border border-zinc-700 rounded-[12px] px-4 py-3"><input id="roomPass" placeholder="Password ex: AF1234" class="w-full mt-3 bg-zinc-900 border border-zinc-700 rounded-[12px] px-4 py-3"><button onclick="const tid=document.getElementById('rtid').value;const rid=document.getElementById('roomId').value;const rp=document.getElementById('roomPass').value;if(!tid||!rid){alert('Fill');return}DB.rooms[tid]={id:rid,pass:rp};save();alert('Room LIVE for '+tid+' ID:'+rid)" class="w-full mt-4 bg-[#39FF14] text-black font-black py-3.5 rounded-full">MAKE ROOM LIVE 🔴</button><div class="mt-6 text-[12px]"><b>Live Rooms:</b><div class="mt-2 space-y-2">${Object.keys(DB.rooms).map(k=>`<div class="bg-zinc-900 border border-zinc-800 p-3 rounded-[12px] flex justify-between"><span>${k} - ID:${DB.rooms[k].id} PASS:${DB.rooms[k].pass}</span><button onclick="delete DB.rooms['${k}'];save();render()" class="text-red-400">X</button></div>`).join('')||'<span class="text-zinc-500">No live room</span>'} </div></div></div><div class="bg-[#161616] border border-zinc-800 rounded-[22px] p-6"><h2 class="font-bold">💰 bKash Deposits - 01344758887</h2><div class="mt-4 space-y-2 max-h-[500px] overflow-auto">${deps.length?deps.map(d=>`<div class="bg-zinc-900 border border-zinc-800 rounded-[14px] p-3.5"><div class="flex justify-between"><b class="text-[13px]">${d.type}</b><b class="text-[#39FF14]">৳${d.amt}</b></div><div class="text-[11px] text-zinc-500 mt-1">TrxID: ${d.id} • ${d.date}</div></div>`).join(''):`<div class="py-16 text-center text-zinc-500 text-[13px]">এখনো কোনো Deposit নাই</div>`} </div></div></div>`;return;
 }
-render();
-window.addEventListener('hashchange',render);
+}
+if(!DB.user &&!['/login','/register','/forgot','/admin'].includes(r)){nav('/login');return;}
+let header=`<header class="sticky top-0 z-20 bg-white/85 backdrop-blur-xl border-b border-zinc-200/60"><div class="max-w-[1120px] mx-auto px-4 h-[64px] flex justify-between items-center"><div class="flex items-center gap-2.5"><div class="w-9 h-9 bg-zinc-900 text-white rounded-[10px] flex items-center justify-center font-black text-[15px]">TX</div><div><div class="font-black text-[16px] leading-none tracking-tight">TournaX</div><div class="text-[8.5px] tracking-[2px] text-zinc-500 font-bold mt-0.5">COMPETE. PLAY. WIN.</div></div></div><div class="hidden md:flex items-center gap-6 text-[14px] font-medium"><button onclick="nav('/')">Home</button><button onclick="nav('/tournaments')">Tournaments</button><button onclick="nav('/orders')">My Orders</button><button onclick="nav('/wallet')">Wallet</button><button onclick="nav('/profile')">Profile</button></div><div class="flex items-center gap-2.5"><div class="hidden md:flex bg-zinc-50 border rounded-full px-3.5 py-1.5 text-[12px] font-bold">৳${DB.balance}</div><button onclick="nav('/profile')" class="w-9 h-9 rounded-full bg-zinc-900 text-white font-bold text-[13px]">${DB.user?DB.user.name[0].toUpperCase():'U'}</button></div></div></header>`;
+let html='';
+if(r=='/login'){html=`<div class="max-w-[400px] mx-auto px-4 py-20"><div class="bg-white border rounded-[24px] p-8 shadow-sm"><h1 class="text-[26px] font-black">Welcome Back</h1><input id="le" placeholder="Email" class="w-full mt-6 border border-zinc-200 rounded-[12px] px-4 py-3.5 text-[14px]"><input id="lp" type="password" placeholder="Password" class="w-full mt-3 border border-zinc-200 rounded-[12px] px-4 py-3.5 text-[14px]"><button onclick="doLogin()" class="w-full mt-5 bg-zinc-900 text-white py-3.5 rounded-full font-bold">Login</button><div class="text-center mt-4 text-[13px]"><button onclick="nav('/register')" class="text-zinc-500">No account? <b class="text-zinc-900">Create one</b></button></div></div></div>`}
+else if(r=='/register'){html=`<div class="max-w-[400px] mx-auto px-4 py-16"><div class="bg-white border rounded-[24px] p-8 shadow-sm"><h1 class="text-[26px] font-black">Create Account</h1><input id="rn" placeholder="Full Name" class="w-full mt-6 border rounded-[12px] px-4 py-3.5"><input id="re" placeholder="Email" class="w-full mt-3 border rounded-[12px] px-4 py-3.5"><input id="rp" type="password" placeholder="Password" class="w-full mt-3 border rounded-[12px] px-4 py-3.5"><button onclick="doReg()" class="w-full mt-5 bg-zinc-900 text-white py-3.5 rounded-full font-bold">Sign Up</button></div></div>`}
+else if(r=='/'||r==''){html=`<div class="max-w-[1120px] mx-auto px-4 py-6"><div class="grid md:grid-cols-3 gap-4"><div class="md:col-span-2 bg-[#101010] text-white rounded-[26px] p-7 md:p-8 relative overflow-hidden"><p class="text-[10px] tracking-[3px] text-zinc-500 font-bold">TOURNAX OFFICIAL 2025 - Firebase Connected ✅</p><h1 class="text-[36px] md:text-[44px] font-black leading-[0.9] tracking-tight mt-3">Compete.<br>Play.<br><span class="text-[#39FF14]">Win.</span></h1><p class="text-zinc-400 text-[13px] mt-4 max-w-[340px]">Bangladesh's trusted tournament platform. bKash: 01344758887 • Instant Prize.</p><div class="flex gap-2 mt-6"><button onclick="nav('/tournaments')" class="bg-white text-black px-6 py-2.5 rounded-full font-bold text-[13px]">Browse Tournaments →</button><button onclick="nav('/wallet/deposit')" class="border border-zinc-700 px-6 py-2.5 rounded-full font-bold text-[13px]">Deposit</button></div></div><div class="bg-white border rounded-[24px] p-5"><div class="flex justify-between items-center"><h3 class="font-bold">Wallet</h3><span class="text-[11px] bg-green-50 border border-green-200 text-green-700 px-2.5 py-1 rounded-full font-bold">Active</span></div><div class="mt-4 bg-zinc-50 border rounded-[16px] p-4"><div class="text-[11px] text-zinc-500 font-bold tracking-wide">AVAILABLE BALANCE</div><div class="text-[34px] font-black tracking-tight">৳${DB.balance}</div><div class="text-[11px] text-zinc-500">ID: ${DB.user?DB.user.id:'TX-0000'}</div></div><div class="grid grid-cols-2 gap-2 mt-3"><button onclick="nav('/wallet/deposit')" class="bg-zinc-900 text-white py-2.5 rounded-full text-[13px] font-bold">+ Deposit</button><button onclick="nav('/wallet/withdraw')" class="border border-zinc-200 py-2.5 rounded-full text-[13px] font-bold">Withdraw</button></div></div></div><div class="mt-7 flex items-center justify-between"><h2 class="font-black text-[18px]">Featured</h2><div class="flex gap-2 overflow-auto no-scrollbar max-w-[70%]">${CATS.map(c=>`<button onclick="state.cat='${c}';render()" class="whitespace-nowrap px-4 py-2 rounded-full border text-[13px] font-medium ${state.cat==c?'bg-zinc-900 text-white border-zinc-900':'bg-white text-zinc-600'}">${c}</button>`).join('')}</div></div><div class="grid md:grid-cols-3 gap-3 mt-4">${TOURNAMENTS.filter(t=>state.cat=='All'||t.cat==state.cat).map(TOUR_CARD).join('')}</div></div>`}
+else if(r.startsWith('/tournaments/')){const t=state.sel||TOURNAMENTS[0];const room=DB.rooms[t.id];html=`<div class="max-w-[820px] mx-auto px-4 py-6"><button onclick="nav('/tournaments')" class="text-[13px] font-medium">← Back</button><div class="bg-white border rounded-[26px] overflow-hidden mt-4"><div class="h-[160px] bg-zinc-900 flex items-center justify-center text-[60px] relative"><span>${t.banner}</span><span class="absolute top-4 left-4 text-[10px] bg-white/15 backdrop-blur text-white border border-white/20 px-3 py-1 rounded-full">${t.cat}</span><span class="absolute top-4 right-4 text-[10px] font-bold px-3 py-1 rounded-full ${t.status=='live'?'bg-red-500 text-white':'bg-[#39FF14] text-black'}">${t.status.toUpperCase()}</span></div><div class="p-6 md:p-7"><div class="flex justify-between items-start gap-4"><div><h1 class="text-[24px] font-black leading-tight">${t.title}</h1><p class="text-[13px] text-zinc-500 mt-1">${t.game} • ${t.mode} • ${t.map}</p></div><div class="text-right"><div class="text-[11px] text-zinc-500">PRIZE POOL</div><div class="text-[22px] font-black text-amber-600">৳${t.prize}</div></div></div>${room?`<div class="mt-5 bg-[#101010] text-white rounded-[16px] p-4 flex justify-between items-center"><div><div class="text-[11px] text-[#39FF14] font-bold">🔴 ROOM IS LIVE</div><div class="font-mono text-[16px] font-black mt-1">ID: ${room.id} • PASS: ${room.pass}</div></div><button onclick="navigator.clipboard.writeText('${room.id}');alert('Copied')" class="bg-white text-black px-4 py-1.5 rounded-full text-[12px] font-bold">Copy ID</button></div>`:''}<div class="mt-6"><h3 class="font-bold text-[13px]">RULES</h3><p class="text-[13px] text-zinc-600 mt-2 leading-relaxed bg-zinc-50 border p-4 rounded-[14px]">${t.rules}</p></div><button onclick="joinT('${t.id}')" class="w-full mt-7 bg-zinc-900 text-white py-4 rounded-full font-black text-[15px]">JOIN NOW — ৳${t.entry}</button><p class="text-center text-[11px] text-zinc-500 mt-3">Balance: ৳${DB.balance}</p></div></div></div>`}
+else if(r=='/tournaments'){html=`<div class="max-w-[1120px] mx-auto px-4 py-6"><h1 class="text-[24px] font-black">All Tournaments</h1><div class="flex gap-2 overflow-auto no-scrollbar mt-4">${CATS.map(c=>`<button onclick="state.cat='${c}';render()" class="whitespace-nowrap px-4 py-2 rounded-full border text-[13px] ${state.cat==c?'bg-zinc-900 text-white':'bg-white'}">${c}</button>`).join('')}</div><div class="grid md:grid-cols-3 gap-3 mt-5">${TOURNAMENTS.filter(t=>state.cat=='All'||t.cat==state.cat).map(TOUR_CARD).join('')}</div></div>`}
+else if(r=='/orders'){html=`<div class="max-w-[800px] mx-auto px-4 py-6"><h1 class="text-[22px] font-black">My Orders</h1><div class="mt-5 space-y-3">${DB.orders.length==0?`<div class="bg-white border rounded-[24px] p-12 text-center"><div class="text-[40px]">📦</div><p class="font-bold mt-3">No orders yet</p><button onclick="nav('/tournaments')" class="mt-4 bg-zinc-900 text-white px-6 py-2.5 rounded-full text-[13px] font-bold">Browse Tournaments</button></div>`:DB.orders.map(o=>{const rm=DB.rooms[o.tid];return `<div class="bg-white border rounded-[18px] p-4"><div class="flex justify-between items-start"><div><b class="text-[14px]">${o.name}</b><div class="text-[12px] text-zinc-500">#${o.id} • ${o.date} • ৳${o.amount}</div>${rm?`<div class="mt-2 bg-[#101010] text-white rounded-[10px] px-3 py-2 inline-block font-mono text-[13px]">ROOM ID: ${rm.id} | PASS: ${rm.pass} 🔴 LIVE</div>`:`<div class="mt-2 text-[11px] bg-amber-50 border border-amber-200 text-amber-700 px-3 py-1.5 rounded-full inline-block">Room ID 15 min before match</div>`} </div><span class="px-3 py-1 bg-green-50 border border-green-200 text-green-700 rounded-full text-[10px] font-bold">CONFIRMED</span></div></div>`}).join('')} </div></div>`}
+else if(r=='/wallet'){html=`<div class="max-w-[800px] mx-auto px-4 py-6"><h1 class="text-[22px] font-black">Wallet</h1><div class="grid md:grid-cols-2 gap-4 mt-4"><div class="bg-[#101010] text-white rounded-[24px] p-6"><div class="text-zinc-400 text-[11px] tracking-wide font-bold">AVAILABLE BALANCE</div><div class="text-[40px] font-black tracking-tight">৳${DB.balance}</div><div class="flex gap-2 mt-5"><button onclick="nav('/wallet/deposit')" class="bg-white text-black px-6 py-2.5 rounded-full font-bold text-[13px]">+ Deposit</button><button onclick="nav('/wallet/withdraw')" class="border border-zinc-700 px-6 py-2.5 rounded-full text-[13px] font-bold">Withdraw</button></div></div><div class="bg-white border rounded-[24px] p-5"><b class="text-[14px]">Payment Method</b><div class="mt-4 bg-gradient-to-br from-pink-50 to-pink-100 border border-pink-200 rounded-[16px] p-4"><div class="text-[11px] font-bold text-pink-700 tracking-wide">BKASH PERSONAL - SEND MONEY</div><div class="text-[26px] font-black tracking-tight mt-1">01344758887</div></div><button onclick="nav('/transactions')" class="w-full mt-4 border border-zinc-200 py-2.5 rounded-full text-[13px] font-bold">View Transactions →</button></div></div></div>`}
+else if(r=='/wallet/deposit'){html=`<div class="max-w-[500px] mx-auto px-4 py-6"><button onclick="nav('/wallet')" class="text-[13px] font-medium">← Wallet</button><h1 class="text-[22px] font-black mt-2">Deposit Money</h1><div class="bg-white border rounded-[24px] p-6 mt-4 shadow-sm"><div class="bg-pink-50 border-2 border-pink-200 rounded-[18px] p-5 text-center"><div class="text-[11px] font-bold text-pink-700 tracking-wide">SEND MONEY TO THIS NUMBER</div><div class="text-[30px] font-black tracking-tight">01344758887</div></div><div class="mt-6 space-y-3"><div><label class="text-[12px] font-bold">Amount (Min 50)</label><input id="da" type="number" placeholder="ex: 500" class="w-full mt-1.5 border border-zinc-200 rounded-[12px] px-4 py-3.5"></div><div><label class="text-[12px] font-bold">Your bKash Number</label><input id="ds" placeholder="01XXXXXXXXX" class="w-full mt-1.5 border border-zinc-200 rounded-[12px] px-4 py-3.5"></div><div><label class="text-[12px] font-bold">bKash TrxID</label><input id="dt" placeholder="ex: 9A7F2K1L" class="w-full mt-1.5 border border-zinc-200 rounded-[12px] px-4 py-3.5"></div></div><button onclick="dep()" class="w-full mt-6 bg-zinc-900 text-white py-3.5 rounded-full font-bold">Submit Deposit Request</button></div></div>`}
+else if(r=='/wallet/withdraw'){html=`<div class="max-w-[500px] mx-auto px-4 py-6"><button onclick="nav('/wallet')" class="text-[13px]">← Wallet</button><h1 class="text-[22px] font-black mt-2">Withdraw</h1><div class="bg-white border rounded-[24px] p-6 mt-4"><div class="bg-zinc-50 border rounded-[12px] p-4 flex justify-between text-[13px]"><span>Available</span><b>৳${DB.balance}</b></div><input id="wa" type="number" placeholder="Amount Min 100" class="w-full mt-4 border rounded-[12px] px-4 py-3.5"><input id="wn" placeholder="bKash Number" class="w-full mt-3 border rounded-[12px] px-4 py-3.5"><button onclick="wd()" class="w-full mt-5 bg-zinc-900 text-white py-3.5 rounded-full font-bold">Request Withdraw</button></div></div>`}
+else if(r=='/transactions'){html=`<div class="max-w-[600px] mx-auto px-4 py-6"><button onclick="nav('/wallet')" class="text-[13px]">← Wallet</button><h1 class="text-[22px] font-black mt-2">Transactions</h1><div class="mt-4 space-y-2.5">${DB.trx.map(t=>`<div class="bg-white border rounded-[14px] p-4 flex justify-between items-center"><div><b class="text-[13px]">${t.type}</b><div class="text-[11px] text-zinc-500 mt-0.5">${t.id} • ${t.date||''}</div></div><b class="text-[14px]">৳${t.amt}</b></div>`).join('')||'<div class="bg-white border rounded-[24px] p-10 text-center text-[13px] text-zinc-500">No transactions yet</div>'} </div></div>`}
+else if(r=='/profile'){html=`<div class="max-w-[600px] mx-auto px-4 py-6"><h1 class="text-[22px] font-black">Profile</h1><div class="bg-white border rounded-[24px] p-6 mt-4 flex gap-4 items-center"><div class="w-14 h-14 bg-zinc-900 text-white rounded-full flex items-center justify-center font-black text-[20px]">${DB.user?DB.user.name[0].toUpperCase():'U'}</div><div><b class="text-[16px]">${DB.user?DB.user.name:'User'}</b><div class="text-[12px] text-zinc-500">${DB.user?DB.user.email:''}</div><div class="text-[11px] mt-1 bg-zinc-50 border inline-block px-2.5 py-1 rounded-full">${DB.user?DB.user.id:''} • ৳${DB.balance}</div></div></div><div class="grid grid-cols-2 gap-3 mt-4"><div class="bg-white border rounded-[18px] p-4 text-center"><div class="text-[22px] font-black">${DB.orders.length}</div><div class="text-[11px] text-zinc-500">Tournaments</div></div><div class="bg-white border rounded-[18px] p-4 text-center"><div class="text-[22px] font-black">৳${DB.balance}</div><div class="text-[11px] text-zinc-500">Balance</div></div></div><button onclick="logout()" class="w-full mt-4 p-4 bg-white border rounded-[18px] text-left text-red-600 font-bold text-[14px]">Logout →</button></div>`}
+const bottom=`<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white/90 backdrop-blur-xl border-t flex justify-around py-2.5 z-30"><button onclick="nav('/')" class="flex flex-col items-center text-[10px] gap-0.5">🏠Home</button><button onclick="nav('/tournaments')" class="flex flex-col items-center text-[10px] gap-0.5">🏆Tour</button><button onclick="nav('/orders')" class="flex flex-col items-center text-[10px] gap-0.5">📦Orders</button><button onclick="nav('/wallet')" class="flex flex-col items-center text-[10px] gap-0.5">💳Wallet</button><button onclick="nav('/profile')" class="flex flex-col items-center text-[10px] gap-0.5">👤Profile</button></nav><div class="h-[75px] md:hidden"></div>`;
+document.getElementById('app').innerHTML=header+html+bottom;
+}
+window.doLogin=()=>{const e=document.getElementById('le').value;if(!e){alert('Email দাও');return}DB.user={id:'TX-'+Math.floor(10000+Math.random()*90000),name:e.split('@')[0],email:e};save();nav('/')}
+window.doReg=()=>{const n=document.getElementById('rn').value;const e=document.getElementById('re').value;if(!n||!e){alert('Fill all');return}DB.user={id:'TX-'+Math.floor(10000+Math.random()*90000),name:n,email:e};save();nav('/')}
+window.joinT=(id)=>{const t=TOURNAMENTS.find(x=>x.id==id);if(DB.balance<t.entry){if(confirm(`Balance কম আছে ৳${DB.balance}, লাগবে ৳${t.entry}. Deposit করবা?`))nav('/wallet/deposit');return}DB.balance-=t.entry;const oid='TX'+Math.floor(100000+Math.random()*900000);DB.orders.push({id:oid,tid:t.id,name:t.title,amount:t.entry,date:new Date().toLocaleDateString()});DB.trx.unshift({id:oid,type:'Tournament Entry - '+t.title,amt:t.entry,date:new Date().toLocaleDateString()});save();alert('Joined! Order #'+oid);nav('/orders')}
+window.dep=()=>{const a=document.getElementById('da').value;const s=document.getElementById('ds').value;const tr=document.getElementById('dt').value;if(!a||!s||!tr){alert('সব ঘর পূরণ করো');return}DB.balance+=Number(a);DB.trx.unshift({id:tr,type:'Deposit bKash 01344758887',amt:a,bkash:s,date:new Date().toLocaleDateString()});save();alert('Deposit Submitted! ৳'+a);nav('/wallet')}
+window.wd=()=>{const a=Number(document.getElementById('wa').value);if(a<100||a>DB.balance){alert('Min 100');return}DB.balance-=a;DB.trx.unshift({id:'WD'+Date.now(),type:'Withdraw bKash',amt:a,date:new Date().toLocaleDateString()});save();alert('Withdraw Request ৳'+a);nav('/wallet')}
+window.logout=()=>{localStorage.clear();location.hash='/login';location.reload()}
+render();addEventListener('hashchange',()=>{state.route=location.hash.slice(1)||'/';render()})
 </script>
 </body>
 </html>
