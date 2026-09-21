@@ -1,38 +1,108 @@
+
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TournaX - Compete. Play. Win.</title><script src="https://cdn.tailwindcss.com"></script></head>
-<body class="bg-[#f9f9f9]"><div id="app"></div>
+<html lang="bn">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TournaX - Real Esports Platform</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+</head>
+<body class="bg-[#050507] text-white">
+<div id="app" class="min-h-screen flex items-center justify-center">Loading Real TournaX...</div>
 <script>
-const CATS=["All","Free Fire","PUBG Mobile","BGMI","eFootball"];
-const T=[
-{id:"ff1",t:"TournaX Weekly Clash",g:"Free Fire",e:20,p:2000,j:68,tot:100,d:"22 Sep",s:"upcoming",b:"🔥"},
-{id:"ff2",t:"TournaX Pro Battle",g:"Free Fire",e:50,p:5000,j:42,tot:48,d:"23 Sep",s:"upcoming",b:"💎"},
-{id:"pb1",t:"TournaX Battle Royale",g:"PUBG Mobile",e:50,p:5000,j:92,tot:100,d:"21 Sep",s:"live",b:"🎯"},
+// ==== 1. তোমার FIREBASE CONFIG এখানে বসাও ====
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_API_KEY",
+  authDomain: "PASTE_YOUR_AUTH_DOMAIN",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  storageBucket: "PASTE_YOUR_BUCKET",
+  messagingSenderId: "PASTE",
+  appId: "PASTE"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+const TOURNAMENTS = [
+ {id:"ff1",title:"WEEKLY CLASH",game:"Free Fire",entry:20,prize:2000,slots:"68/100",date:"TODAY 9PM",status:"upcoming"},
+ {id:"ff2",title:"PRO BATTLE",game:"Free Fire",entry:50,prize:5000,slots:"42/48",date:"TOMORROW 8:30PM",status:"hot"},
+ {id:"pb1",title:"BATTLE ROYALE",game:"PUBG Mobile",entry:50,prize:5000,slots:"92/100",date:"LIVE NOW",status:"live"},
+ {id:"bg1",title:"BGMI DOMINATION",game:"BGMI",entry:30,prize:3000,slots:"25/64",date:"24 SEP",status:"upcoming"},
 ];
-let DB={user:JSON.parse(localStorage.getItem('u')||'null'),bal:Number(localStorage.getItem('b')||'850'),ord:JSON.parse(localStorage.getItem('o')||'[]'),trx:JSON.parse(localStorage.getItem('tr')||'[]'),rooms:JSON.parse(localStorage.getItem('rm')||'{}')};
-function sv(){localStorage.setItem('u',JSON.stringify(DB.user));localStorage.setItem('b',DB.bal);localStorage.setItem('o',JSON.stringify(DB.ord));localStorage.setItem('tr',JSON.stringify(DB.trx));localStorage.setItem('rm',JSON.stringify(DB.rooms));}
-let S={r:location.hash.slice(1)||'/',cat:"All",sel:null,ad:false};
-function nav(r){location.hash=r;S.r=r;render();scrollTo(0,0)}
-function card(x){return `<div onclick="op('${x.id}')" class="bg-white border rounded-[18px] p-4"><div class="flex gap-3"><div class="w-12 h-12 bg-zinc-100 rounded-[12px] flex items-center justify-center text-xl">${x.b}</div><div class="flex-1"><div class="flex justify-between"><b class="text-[14px]">${x.t}</b><span class="text-[10px] px-2 py-1 rounded-full ${x.s=='live'?'bg-red-500 text-white':'bg-zinc-900 text-white'}">${x.s}</span></div><p class="text-[12px] text-zinc-500">${x.g} • ${x.d}</p><div class="flex gap-2 mt-2"><span class="bg-zinc-50 border rounded-full px-3 py-1 text-[11px]">৳${x.e} Entry</span><span class="bg-amber-50 border text-amber-700 rounded-full px-3 py-1 text-[11px] font-bold">৳${x.p}</span></div></div></div></div>`}
-window.op=(id)=>{S.sel=T.find(a=>a.id==id);nav('/t/'+id)}
-function render(){
-let r=S.r;
-if(r=='/admin'){if(!S.ad){document.getElementById('app').innerHTML=`<div class="min-h-screen bg-black flex items-center justify-center p-4"><div class="bg-zinc-900 border border-zinc-800 rounded-[20px] p-8 w-full max-w-[350px] text-center"><h1 class="text-white font-black text-[20px]">AF ADMIN</h1><input id="cd" type="password" placeholder="Code" class="w-full mt-4 bg-black border border-zinc-700 rounded-full px-4 py-3 text-white text-center"><button onclick="if(document.getElementById('cd').value=='AF-0134-ADMIN'){S.ad=true;render()}else alert('Wrong')" class="w-full mt-3 bg-[#39FF14] text-black font-bold py-3 rounded-full">UNLOCK</button><p class="text-[10px] text-zinc-600 mt-3">AF-0134-ADMIN | 01344758887</p></div></div>`;return}else{document.getElementById('app').innerHTML=`<div class="min-h-screen bg-black text-white p-4"><div class="flex justify-between"><b class="text-[#39FF14]">ADMIN AF</b><button onclick="S.ad=false;nav('/')" class="border px-3 py-1 rounded-full text-[12px]">Logout</button></div><div class="mt-6 bg-zinc-900 border border-zinc-800 rounded-[20px] p-5"><h2>Room ID দাও</h2><input id="tid" placeholder="Tournament ID ex: ff1" class="w-full mt-3 bg-black border border-zinc-700 rounded-[12px] px-4 py-3"><input id="rid" placeholder="Room ID" class="w-full mt-2 bg-black border border-zinc-700 rounded-[12px] px-4 py-3"><input id="rp" placeholder="Password" class="w-full mt-2 bg-black border border-zinc-700 rounded-[12px] px-4 py-3"><button onclick="DB.rooms[document.getElementById('tid').value]={id:document.getElementById('rid').value,pass:document.getElementById('rp').value};sv();alert('LIVE')" class="w-full mt-3 bg-[#39FF14] text-black font-bold py-3 rounded-full">LIVE করো</button></div><div class="mt-4 bg-zinc-900 border border-zinc-800 rounded-[20px] p-5"><h2>bKash 01344758887 Deposit</h2><div class="mt-3 space-y-2">${DB.trx.filter(t=>t.t.includes('Deposit')).map(d=>`<div class="bg-black p-3 rounded-[12px] text-[12px]">${d.t} ৳${d.a} - ${d.id}</div>`).join('')||'No req'}</div></div></div>`;return;}}
-if(!DB.user&&r!='/login'&&r!='/register'&&r!='/admin'){nav('/login');return;}
-let h=`<header class="bg-white border-b sticky top-0 z-10"><div class="max-w-[1100px] mx-auto px-4 h-[60px] flex justify-between items-center"><b>TournaX</b><span class="text-[12px] font-bold">৳${DB.bal}</span></div></header>`;
-let html='';
-if(r=='/login'){html=`<div class="max-w-[380px] mx-auto p-6 mt-10 bg-white border rounded-[24px]"><h1 class="font-black text-[22px]">Login</h1><input id="le" placeholder="Email" class="w-full mt-4 border rounded-[12px] px-4 py-3"><input id="lp" type="password" placeholder="Pass" class="w-full mt-3 border rounded-[12px] px-4 py-3"><button onclick="DB.user={name:document.getElementById('le').value.split('@')[0],email:document.getElementById('le').value};sv();nav('/')" class="w-full mt-4 bg-zinc-900 text-white py-3 rounded-full font-bold">Login</button><button onclick="nav('/register')" class="w-full mt-3 border py-3 rounded-full text-[13px]">Create Account</button></div>`}
-else if(r=='/register'){html=`<div class="max-w-[380px] mx-auto p-6 mt-10 bg-white border rounded-[24px]"><h1 class="font-black text-[22px]">Create Account</h1><input id="rn" placeholder="Name" class="w-full mt-4 border rounded-[12px] px-4 py-3"><input id="re" placeholder="Email" class="w-full mt-3 border rounded-[12px] px-4 py-3"><button onclick="DB.user={name:document.getElementById('rn').value,email:document.getElementById('re').value};sv();nav('/')" class="w-full mt-4 bg-zinc-900 text-white py-3 rounded-full font-bold">Sign Up</button></div>`}
-else if(r=='/'||r==''){html=`<div class="max-w-[1100px] mx-auto p-4"><div class="bg-zinc-900 text-white rounded-[24px] p-6"><h1 class="text-[30px] font-black leading-none">Compete.<br>Play. Win.</h1><p class="text-zinc-400 text-[12px] mt-2">bKash: 01344758887</p></div><div class="flex gap-2 mt-4 overflow-auto">${CATS.map(c=>`<button onclick="S.cat='${c}';render()" class="px-4 py-2 rounded-full border text-[13px] ${S.cat==c?'bg-zinc-900 text-white':'bg-white'}">${c}</button>`).join('')}</div><div class="grid md:grid-cols-3 gap-3 mt-4">${T.filter(x=>S.cat=='All'||x.g==S.cat).map(card).join('')}</div></div>`}
-else if(r.startsWith('/t/')){let x=S.sel||T[0];let rm=DB.rooms[x.id];html=`<div class="max-w-[600px] mx-auto p-4"><button onclick="nav('/')" class="text-[13px]">← Back</button><div class="bg-white border rounded-[24px] overflow-hidden mt-4"><div class="h-[100px] bg-zinc-900 flex items-center justify-center text-4xl">${x.b}</div><div class="p-5"><h1 class="font-black text-[18px]">${x.t}</h1><p class="text-[12px] text-zinc-500">${x.g}</p>${rm?`<div class="mt-3 bg-black text-white rounded-[12px] p-3 font-mono">ID:${rm.id} PASS:${rm.pass} 🔴 LIVE</div>`:''}<button onclick="if(DB.bal<x.e){alert('Balance কম');nav('/wallet/deposit');return}DB.bal-=x.e;let oid='TX'+Math.floor(100000+Math.random()*900000);DB.ord.push({id:oid,tid:x.id,name:x.t});DB.trx.unshift({id:oid,t:'Entry '+x.t,a:x.e});sv();alert('Joined '+oid);nav('/orders')" class="w-full mt-4 bg-zinc-900 text-white py-3 rounded-full font-bold">JOIN ৳${x.e}</button></div></div></div>`}
-else if(r=='/orders'){html=`<div class="max-w-[600px] mx-auto p-4"><h1 class="font-black">My Orders</h1><div class="mt-4 space-y-3">${DB.ord.map(o=>{let rm=DB.rooms[o.tid];return `<div class="bg-white border rounded-[18px] p-4"><b class="text-[13px]">${o.name}</b><div class="text-[11px] text-zinc-500">#${o.id}</div>${rm?`<div class="mt-2 bg-black text-white rounded-[10px] px-3 py-2 font-mono text-[12px]">ROOM: ${rm.id} | ${rm.pass}</div>`:''}</div>`}).join('')||'<div class="bg-white border rounded-[24px] p-10 text-center">No orders</div>'}</div></div>`}
-else if(r=='/wallet'){html=`<div class="max-w-[600px] mx-auto p-4"><h1 class="font-black">Wallet ৳${DB.bal}</h1><div class="grid grid-cols-2 gap-2 mt-4"><button onclick="nav('/wallet/deposit')" class="bg-zinc-900 text-white py-3 rounded-full font-bold">Deposit</button><button onclick="nav('/wallet/withdraw')" class="border py-3 rounded-full font-bold">Withdraw</button></div><div class="mt-4 bg-pink-50 border border-pink-200 rounded-[14px] p-4"><b>bKash Personal</b><div class="text-[22px] font-black">01344758887</div></div><button onclick="nav('/transactions')" class="w-full mt-3 border py-3 rounded-full text-[13px]">Transactions</button></div>`}
-else if(r=='/wallet/deposit'){html=`<div class="max-w-[500px] mx-auto p-4"><button onclick="nav('/wallet')" class="text-[13px]">← Wallet</button><h1 class="font-black mt-2">Deposit</h1><div class="bg-white border rounded-[24px] p-5 mt-4"><div class="bg-pink-50 border border-pink-200 rounded-[16px] p-4 text-center"><div class="text-[11px] font-bold text-pink-700">bKash Send Money</div><div class="text-[26px] font-black">01344758887</div></div><input id="da" type="number" placeholder="Amount" class="w-full mt-4 border rounded-[12px] px-4 py-3"><input id="dt" placeholder="TrxID" class="w-full mt-3 border rounded-[12px] px-4 py-3"><button onclick="DB.bal+=Number(document.getElementById('da').value);DB.trx.unshift({id:document.getElementById('dt').value,t:'Deposit bKash 01344758887',a:document.getElementById('da').value});sv();alert('OK');nav('/wallet')" class="w-full mt-4 bg-zinc-900 text-white py-3 rounded-full font-bold">Submit</button></div></div>`}
-else if(r=='/wallet/withdraw'){html=`<div class="max-w-[500px] mx-auto p-4"><button onclick="nav('/wallet')" class="text-[13px]">← Wallet</button><h1 class="font-black mt-2">Withdraw</h1><div class="bg-white border rounded-[24px] p-5 mt-4"><input id="wa" type="number" placeholder="Amount Min 100" class="w-full border rounded-[12px] px-4 py-3"><input id="wn" placeholder="bKash Number" class="w-full mt-3 border rounded-[12px] px-4 py-3"><button onclick="let a=Number(document.getElementById('wa').value);DB.bal-=a;DB.trx.unshift({id:'WD'+Date.now(),t:'Withdraw',a:a});sv();alert('Req ৳'+a);nav('/wallet')" class="w-full mt-4 bg-zinc-900 text-white py-3 rounded-full font-bold">Request</button></div></div>`}
-else if(r=='/transactions'){html=`<div class="max-w-[600px] mx-auto p-4"><h1 class="font-black">Transactions</h1><div class="mt-4 space-y-2">${DB.trx.map(t=>`<div class="bg-white border rounded-[14px] p-4 flex justify-between"><div><b class="text-[13px]">${t.t}</b><div class="text-[11px] text-zinc-500">${t.id}</div></div><b>৳${t.a}</b></div>`).join('')||'No trx'}</div></div>`}
-else if(r=='/profile'){html=`<div class="max-w-[600px] mx-auto p-4"><h1 class="font-black">Profile</h1><div class="bg-white border rounded-[24px] p-6 mt-4"><b>${DB.user.name}</b><div class="text-[12px] text-zinc-500">${DB.user.email}</div></div><button onclick="localStorage.clear();location.hash='/login';location.reload()" class="w-full mt-4 p-4 bg-white border rounded-[24px] text-left text-red-600 font-bold">Logout</button></div>`}
-let bot=`<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t flex justify-around py-2"><button onclick="nav('/')" class="flex flex-col items-center text-[10px]">🏠<br>Home</button><button onclick="nav('/tournaments')" class="flex flex-col items-center text-[10px]">🏆<br>Tour</button><button onclick="nav('/orders')" class="flex flex-col items-center text-[10px]">📦<br>Orders</button><button onclick="nav('/wallet')" class="flex flex-col items-center text-[10px]">💳<br>Wallet</button><button onclick="nav('/profile')" class="flex flex-col items-center text-[10px]">👤<br>Profile</button></nav><div class="h-[70px] md:hidden"></div>`;
-document.getElementById('app').innerHTML=h+html+bot;
+
+let currentUser=null, userData=null;
+auth.onAuthStateChanged(async (u)=>{
+  currentUser=u;
+  if(u){
+    const doc = await db.collection('users').doc(u.uid).get();
+    if(!doc.exists){
+      await db.collection('users').doc(u.uid).set({email:u.email,balance:850,name:u.email.split('@')[0],created:Date.now()});
+    }
+    const fresh = await db.collection('users').doc(u.uid).get();
+    userData=fresh.data();
+  }
+  render();
+});
+
+function nav(h){location.hash=h;render();}
+async function joinTournament(id){
+ const t=TOURNAMENTS.find(x=>x.id==id);
+ if(userData.balance < t.entry){alert('Balance কম! bKash 01344758887 তে Deposit করো');nav('#/wallet');return;}
+ await db.collection('users').doc(currentUser.uid).update({balance: firebase.firestore.FieldValue.increment(-t.entry)});
+ await db.collection('orders').add({uid:currentUser.uid,tid:id,title:t.title,entry:t.entry,created:Date.now()});
+ await db.collection('transactions').add({uid:currentUser.uid,type:'entry',amount:t.entry,title:t.title,created:Date.now()});
+ alert('JOINED! My Orders এ যাও');
+ nav('#/orders');
 }
-render();addEventListener('hashchange',()=>{S.r=location.hash.slice(1)||'/';render()})
-</script></body></html>
+
+function render(){
+ let hash=location.hash.replace('#','')||'/';
+ if(!currentUser && hash!='/login' && hash!='/register' && hash!='/admin'){
+   hash='/login'; location.hash='#/login';
+ }
+ let html='';
+ if(hash=='/login'){
+   html=`<div class="bg-[#111113] border border-zinc-800 rounded-[24px] p-8 w-[360px]"><h1 class="text-[26px] font-black">TournaX REAL LOGIN</h1><p class="text-[11px] text-zinc-500 mt-1">bKash: 01344758887</p><input id="em" placeholder="Email" class="w-full mt-6 bg-black border border-zinc-800 rounded-full px-4 py-3"><input id="ps" type="password" placeholder="Password" class="w-full mt-3 bg-black border border-zinc-800 rounded-full px-4 py-3"><button onclick="auth.signInWithEmailAndPassword(document.getElementById('em').value,document.getElementById('ps').value).catch(e=>alert(e.message))" class="w-full mt-4 bg-[#39FF14] text-black font-black py-3 rounded-full">LOGIN</button><button onclick="nav('#/register')" class="w-full mt-2 text-[12px] text-zinc-500">Create Account</button></div>`;
+ }
+ else if(hash=='/register'){
+   html=`<div class="bg-[#111113] border border-zinc-800 rounded-[24px] p-8 w-[360px]"><h1 class="text-[26px] font-black">CREATE REAL ACCOUNT</h1><input id="em" placeholder="Email" class="w-full mt-6 bg-black border border-zinc-800 rounded-full px-4 py-3"><input id="ps" type="password" placeholder="Password" class="w-full mt-3 bg-black border border-zinc-800 rounded-full px-4 py-3"><button onclick="auth.createUserWithEmailAndPassword(document.getElementById('em').value,document.getElementById('ps').value).catch(e=>alert(e.message))" class="w-full mt-4 bg-white text-black font-black py-3 rounded-full">SIGN UP</button></div>`;
+ }
+ else{
+   let header=`<header class="fixed top-0 left-0 right-0 bg-black border-b border-zinc-900 h-[60px] flex items-center justify-between px-4 z-20"><b>TournaX REAL</b><div class="flex gap-2"><span class="bg-zinc-900 px-3 py-1 rounded-full text-[12px]">৳${userData?userData.balance:0}</span><button onclick="auth.signOut()" class="text-[11px] border px-3 py-1 rounded-full">Logout</button></div></header><div class="h-[60px]"></div>`;
+   if(hash=='/'||hash==''){
+     html=header+`<div class="max-w-[1000px] mx-auto p-4"><div class="bg-zinc-900 rounded-[24px] p-6"><h1 class="text-[32px] font-black leading-none">COMPETE. PLAY.<br><span class="text-[#39FF14]">WIN REAL PRIZE.</span></h1><p class="text-[12px] text-zinc-400 mt-2">Real Database Connected • bKash 01344758887</p></div><div class="grid md:grid-cols-2 gap-3 mt-4">${TOURNAMENTS.map(t=>`<div class="bg-[#111113] border border-zinc-800 rounded-[18px] p-4"><div class="flex justify-between"><b class="text-[14px]">${t.title}</b><span class="text-[10px] px-2 py-1 rounded-full ${t.status=='live'?'bg-red-500':'bg-zinc-800'}">${t.status}</span></div><p class="text-[11px] text-zinc-500">${t.game} • ${t.date}</p><div class="flex justify-between mt-3"><span class="text-[12px]">Entry ৳${t.entry}</span><span class="bg-[#39FF14] text-black font-bold px-3 py-1 rounded-full text-[11px]">৳${t.prize}</span></div><button onclick="joinTournament('${t.id}')" class="w-full mt-3 bg-white text-black py-2 rounded-full font-bold text-[13px]">JOIN NOW - REAL</button></div>`).join('')}</div></div>`;
+   }
+   else if(hash=='/orders'){
+     html=header+`<div class="max-w-[600px] mx-auto p-4"><h1 class="font-black">My Orders (Real)</h1><div id="ordersList" class="mt-4">Loading...</div></div>`;
+     setTimeout(async()=>{
+       const snap=await db.collection('orders').where('uid','==',currentUser.uid).orderBy('created','desc').get();
+       let list=''; for(let d of snap.docs){let o=d.data(); let room=await db.collection('rooms').doc(o.tid).get(); let r=room.exists?room.data():null; list+=`<div class="bg-[#111113] border border-zinc-800 rounded-[14px] p-4 mb-2"><b class="text-[13px]">${o.title}</b>${r?`<div class="mt-2 bg-black text-[#39FF14] font-mono p-2 rounded">ID:${r.id} PASS:${r.pass} LIVE</div>`:''}</div>`;}
+       document.getElementById('ordersList').innerHTML=list||'No orders';
+       // Realtime room listener
+       db.collection('rooms').onSnapshot(s=>{ s.docs.forEach(doc=>{/* auto update handled by reload */}) });
+     },500);
+   }
+   else if(hash=='/wallet'){
+     html=header+`<div class="max-w-[500px] mx-auto p-4"><h1 class="font-black text-[20px]">Wallet ৳${userData.balance} REAL</h1><div class="mt-4 bg-pink-600/20 border border-pink-500/30 rounded-[16px] p-4"><div class="text-[11px]">bKash Personal Send Money</div><div class="text-[24px] font-black">01344758887</div></div><div class="grid grid-cols-2 gap-2 mt-4"><button onclick="nav('#/wallet/deposit')" class="bg-[#39FF14] text-black py-3 rounded-full font-black">DEPOSIT</button><button onclick="nav('#/wallet/withdraw')" class="border border-zinc-700 py-3 rounded-full">WITHDRAW</button></div></div>`;
+   }
+   else if(hash=='/wallet/deposit'){
+     html=header+`<div class="max-w-[500px] mx-auto p-4"><h1 class="font-black">Real Deposit</h1><div class="bg-[#111113] border border-zinc-800 rounded-[20px] p-5 mt-4"><p class="text-[12px] text-zinc-400">01344758887 তে টাকা পাঠিয়ে TrxID দাও, Admin Approve করলে Balance Add হবে</p><input id="da" type="number" placeholder="Amount" class="w-full mt-4 bg-black border border-zinc-800 rounded-[12px] px-4 py-3"><input id="dt" placeholder="bKash TrxID" class="w-full mt-3 bg-black border border-zinc-800 rounded-[12px] px-4 py-3"><button onclick="db.collection('deposits').add({uid:currentUser.uid,amount:Number(document.getElementById('da').value),trx:document.getElementById('dt').value,status:'pending',created:Date.now()});alert('Request Sent! Admin Approve করবে');nav('#/wallet')" class="w-full mt-4 bg-[#39FF14] text-black py-3 rounded-full font-black">SUBMIT REAL REQUEST</button></div></div>`;
+   }
+   else if(hash=='/admin'){
+     html=`<div class="p-4 max-w-[800px] mx-auto"><h1 class="font-black text-[#39FF14]">REAL ADMIN - 01344758887</h1><input id="ac" type="password" placeholder="Code AF-0134-ADMIN" class="w-full mt-4 bg-black border border-zinc-700 rounded-full px-4 py-3"><button onclick="if(document.getElementById('ac').value=='AF-0134-ADMIN'){document.getElementById('adminPanel').style.display='block'}" class="mt-2 bg-[#39FF14] text-black px-6 py-2 rounded-full font-bold">UNLOCK</button><div id="adminPanel" style="display:none" class="mt-6"><div class="bg-zinc-900 rounded-[16px] p-4"><h2 class="font-bold">Deposit Requests</h2><div id="depList">Loading...</div></div><div class="bg-zinc-900 rounded-[16px] p-4 mt-4"><h2 class="font-bold">Room LIVE</h2><input id="tid" placeholder="Tournament ID" class="w-full mt-2 bg-black border border-zinc-700 rounded px-3 py-2"><input id="rid" placeholder="Room ID" class="w-full mt-2 bg-black border border-zinc-700 rounded px-3 py-2"><input id="rp" placeholder="Password" class="w-full mt-2 bg-black border border-zinc-700 rounded px-3 py-2"><button onclick="db.collection('rooms').doc(document.getElementById('tid').value).set({id:document.getElementById('rid').value,pass:document.getElementById('rp').value,updated:Date.now()});alert('LIVE')" class="w-full mt-2 bg-[#39FF14] text-black py-2 rounded-full font-bold">MAKE LIVE</button></div></div></div>`;
+     setTimeout(async()=>{
+       const snap=await db.collection('deposits').where('status','==','pending').get();
+       let h=''; snap.forEach(d=>{let x=d.data(); h+=`<div class="bg-black p-3 rounded mt-2 flex justify-between"><div class="text-[12px]">${x.uid.slice(0,6)} - ৳${x.amount} - ${x.trx}</div><button onclick="db.collection('deposits').doc('${d.id}').update({status:'approved'});db.collection('users').doc('${x.uid}').update({balance: firebase.firestore.FieldValue.increment(${x.amount})});alert('Approved')" class="bg-[#39FF14] text-black px-3 py-1 rounded text-[11px]">APPROVE</button></div>`});
+       document.getElementById('depList').innerHTML=h||'No pending';
+     },800);
+   }
+ }
+ document.getElementById('app').innerHTML=html;
+}
+render();
+window.addEventListener('hashchange',render);
+</script>
+</body>
+</html>
